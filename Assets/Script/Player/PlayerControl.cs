@@ -7,10 +7,16 @@ public class PlayerControl : MonoBehaviour
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
     private KeyCode jumpKey;
+    private KeyCode ropeUpKey;
+    private KeyCode ropeDownKey;
+    private KeyCode interactionKey;
 
     [SerializeField] private float playerSpeed = 6.0f;
     [SerializeField] private float jumpPower;
+    [SerializeField] private float climbSpeed = 5.0f;
     private float moveHorizontal = 0.0f;
+    private float moveVertical = 0.0f;
+    private float originGravity;
     private bool isGround = true;
 
     private Rigidbody2D playerRigidbody;
@@ -23,6 +29,9 @@ public class PlayerControl : MonoBehaviour
     private float slopeAngle;
     private Vector2 slopePerp;
     private bool isSlope;
+    private bool canClimb;
+    private bool isClimbing;
+    private bool isClimbSetOnce;
 
     void Start()
     {
@@ -32,6 +41,11 @@ public class PlayerControl : MonoBehaviour
         moveLeftKey = KeyCode.LeftArrow;
         moveRightKey = KeyCode.RightArrow;
         jumpKey = KeyCode.UpArrow;
+        ropeUpKey = KeyCode.UpArrow;
+        ropeDownKey = KeyCode.DownArrow;
+        interactionKey = KeyCode.F;
+
+        originGravity = playerRigidbody.gravityScale;
 
         Managers.Input.keyAction += OnPlayerMove;
         Managers.Input.keyAction += OnPlayerJump;
@@ -45,6 +59,20 @@ public class PlayerControl : MonoBehaviour
         {
             InputManager.isNeedInit = false;
             moveHorizontal = 0.0f;
+        }
+
+        if (canClimb)
+        {
+            if (Input.GetKeyDown(interactionKey))
+                isClimbing = true;
+        }
+
+        if (isClimbing)
+        {
+            playerRigidbody.gravityScale = 0.0f;
+            playerCollider.isTrigger = true;
+            float verticalInput = Input.GetAxis("Vertical");
+            playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
         }
 
         if (moveHorizontal == 0.0f)
@@ -70,25 +98,13 @@ public class PlayerControl : MonoBehaviour
 
     private void OnPlayerMove()
     {
-        moveHorizontal = 0.0f;
+        moveHorizontal = Input.GetAxis("Horizontal");
 
-        if (Input.GetKey(moveLeftKey))
-        {
-            moveHorizontal = -1.0f;
+        if (moveHorizontal < 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            PlayerMovement();
-        }
-
-        if (Input.GetKey(moveRightKey))
-        {
-            moveHorizontal = 1.0f;
+        else
             transform.rotation = Quaternion.Euler(0, 180, 0);
-            PlayerMovement();
-        }
-    }
 
-    private void PlayerMovement()
-    {
         Vector2 movement = new Vector2(moveHorizontal, 0.0f);
 
         if (movement.magnitude > 1)
@@ -127,5 +143,24 @@ public class PlayerControl : MonoBehaviour
         }
         else
             isGround = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+        {
+            canClimb = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+        {
+            canClimb = false;
+            playerCollider.isTrigger = false;
+            playerRigidbody.gravityScale = originGravity;
+            isClimbing = false;
+        }
     }
 }
