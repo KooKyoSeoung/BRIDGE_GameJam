@@ -16,10 +16,10 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI timeText;
     [SerializeField] TextMeshProUGUI dialogueText;
 
+    int curIdx = 0; // Current Dialogue Index
     int storyID =1;
     public int StoryID { get { return storyID; } set { storyID = value; } }
     Dialogue dialogue = new Dialogue();
-    int curIdx = 0; // Current Dialogue Index
     bool isDoneDialogue = false; // Show Next Dialouge Key
 
     #region Unity Life Cycle

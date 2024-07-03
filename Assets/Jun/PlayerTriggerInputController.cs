@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerTriggerInputController : MonoBehaviour
 {
-    // Load Position : transform.position = SaveManager.Instance.LoadSavePoint();
     public TimeTravelItem ReachItem { get; set; } = null;
+
+    #region Unity Life Cycle
     void Update()
     {
         // æ∆¿Ã≈€ »πµÊ
@@ -18,6 +19,12 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)
         {
             ChangeTimeZone();
+        }
+
+        // ∏Æº¬ ±‚¥…
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = SaveManager.Instance.LoadSavePoint();
         }
     }
 
@@ -37,4 +44,5 @@ public class PlayerTriggerInputController : MonoBehaviour
             TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Past;
         }
     }
+    #endregion
 }

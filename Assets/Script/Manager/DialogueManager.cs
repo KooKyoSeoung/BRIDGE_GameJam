@@ -10,10 +10,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField, Tooltip("Ω∫≈‰∏Æ Json")] TextAsset storyLine;
     Dictionary<int, Dialogue> dialogueDictionary = new Dictionary<int, Dialogue>();
 
-    public bool IsDialogue { get; set; } = false;
+    private bool isDialogue = false;
+    public bool IsDialogue { get { return isDialogue; } set { isDialogue = value; /*To Do : Stop Player*/ } }
     public DialogueUI Dialogue_UI { get; set; } = null;
     public DialogueTrigger Dialogue_Trigger { get; set; } = null;
-    
+
+    #region Unity Life Cycle
     private void Awake()
     {
         if (Instance == null)
@@ -27,7 +29,10 @@ public class DialogueManager : MonoBehaviour
         }
         LoadJsonFile();
     }
-
+   
+    /// <summary>
+    /// Call Once When you start game : Load Stroy Dialouge
+    /// </summary>
     public void LoadJsonFile()
     {
         if (storyLine != null)
@@ -42,7 +47,13 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    /// <summary>
+    /// Approach Dialogue By Dialogue ID, Call By StoryTrigger
+    /// </summary>
+    /// <param name="_ID"></param>
+    /// <returns></returns>
     public Dialogue LoadDialogue(int _ID)
     {
         if (dialogueDictionary.ContainsKey(_ID))
