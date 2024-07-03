@@ -13,6 +13,7 @@ public enum TimeZoneType
     None = 3
 }
 
+[RequireComponent(typeof(SpriteOutline))]
 public class TimeTravelItem : MonoBehaviour
 {
     [Header("기획 Part")]
@@ -22,6 +23,9 @@ public class TimeTravelItem : MonoBehaviour
     [SerializeField, Tooltip("현재 사진")] Sprite presentTimeZoneSprite;
 
     SpriteRenderer spr;
+    SpriteOutline spriteOutline;
+    bool testbool = false;
+
     [SerializeField] bool canInteraction = true;
     public bool CanInteraction { get { return canInteraction; } }
 
@@ -29,6 +33,8 @@ public class TimeTravelItem : MonoBehaviour
     private void Awake()
     {
         spr = GetComponent<SpriteRenderer>();
+        spriteOutline = GetComponent<SpriteOutline>();
+        spriteOutline.enabled = false;
     }
 
     private void OnEnable() // Prevene Exception
@@ -107,6 +113,7 @@ public class TimeTravelItem : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             TimeTravelManager.Instance.PlayerTrigger.ReachItem = this;
+            spriteOutline.enabled = true;
         }
     }
 
@@ -115,6 +122,7 @@ public class TimeTravelItem : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             TimeTravelManager.Instance.PlayerTrigger.ReachItem = null;
+            spriteOutline.enabled = false;
         }
     }
     #endregion
