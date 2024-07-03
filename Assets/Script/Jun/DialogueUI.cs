@@ -9,14 +9,15 @@ public class DialogueUI : MonoBehaviour
     [Header("기획자 Part")]
     [SerializeField, Tooltip("다음 대화를 자동으로 넘기는지 결정하는 것")] bool isAutoDialouge;
     [SerializeField, Range(0.1f, 0.5f), Tooltip("타이핑 속도")] float typeTime;
-    [SerializeField, Range(0.1f, 1f), Tooltip("대화가 자동으로 넘어가는 속도")] float nextDialogueTime;
+    [SerializeField, Range(0.1f, 1f), Tooltip("대화가 자동으로 넘어가는 속도")] float autoNextDialogueTime;
+    [SerializeField, Range(0f, 3.0f), Tooltip("다음 대화로 넘어갈 수 있게 해주는 속도")] float nextDialogueTime;
 
     [Header("개발자 Part")]
     [SerializeField] GameObject onoffUI;
     [SerializeField] GameObject skipTextObject;
     [SerializeField] TextMeshProUGUI timeText;
     [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] string boldWord;
+
     int storyID =1;
     public int StoryID { get { return storyID; } set { storyID = value; } }
     Dialogue dialogue = new Dialogue();
@@ -47,18 +48,32 @@ public class DialogueUI : MonoBehaviour
     {
         if (dialogue == null)
             return;
+        // Skip Btn
+        isDoneDialogue = false;
+        skipTextObject.SetActive(false);
+
+        // Start Dialogue
         onoffUI.SetActive(true);
         isStartDialogue = true;
         LoadDiagloue();
-        StartCoroutine(DialogueCor());
+        StartCoroutine(DialogueCor());       
     }
 
     public IEnumerator DialogueCor()
+    { 
+        dialogueText.text = "";
+        dialogueText.text = dialogue.storyLines[curIdx];
+        curIdx += 1;
+        yield return new WaitForSeconds(nextDialogueTime);
+        isDoneDialogue = true;
+        skipTextObject.SetActive(true);
+    }
+
+    public IEnumerator DialogueTypeCor()
     {
         isDoneDialogue = false;
         int len = dialogue.storyLines[curIdx].Length;
         dialogueText.text = "";
-        CheckBoldText(dialogue.storyLines[curIdx], boldWord);
         for (int i = 0; i < len; i++)
         {
             dialogueText.text += dialogue.storyLines[curIdx][i];
@@ -67,7 +82,7 @@ public class DialogueUI : MonoBehaviour
         curIdx += 1;
         if (isAutoDialouge)
         {
-            yield return new WaitForSeconds(nextDialogueTime);
+            yield return new WaitForSeconds(autoNextDialogueTime);
             CheckNextDialogue();
         }
         else
@@ -93,11 +108,5 @@ public class DialogueUI : MonoBehaviour
             // 다음 대화
             StartCoroutine(DialogueCor());
         }
-    }
-
-    public void CheckBoldText(string _dialogue,string _changeWord)
-    {
-        string changeword = $"<b>{_changeWord}</b>";
-        dialogueText.text = dialogueText.text.Replace(changeword, boldWord);
     }
 }
