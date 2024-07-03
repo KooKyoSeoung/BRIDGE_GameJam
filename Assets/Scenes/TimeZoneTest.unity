@@ -2753,7 +2753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102721708630462751, guid: 850599e98c3f7a24f98dda90501e480e, type: 3}
       propertyPath: nextDialogueTime
-      value: 0.3
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 2996220414837949975, guid: 850599e98c3f7a24f98dda90501e480e, type: 3}
       propertyPath: m_text

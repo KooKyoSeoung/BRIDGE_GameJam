@@ -7,9 +7,7 @@ using TMPro;
 public class DialogueUI : MonoBehaviour
 {
     [Header("기획자 Part")]
-    [SerializeField, Tooltip("다음 대화를 자동으로 넘기는지 결정하는 것")] bool isAutoDialouge;
-    [SerializeField, Range(0.1f, 0.5f), Tooltip("타이핑 속도")] float typeTime;
-    [SerializeField, Range(0.1f, 1f), Tooltip("대화가 자동으로 넘어가는 속도")] float autoNextDialogueTime;
+    //[SerializeField, Tooltip("다음 대화를 자동으로 넘기는지 결정하는 것")] bool isAutoDialouge;
     [SerializeField, Range(0f, 3.0f), Tooltip("다음 대화로 넘어갈 수 있게 해주는 속도")] float nextDialogueTime;
 
     [Header("개발자 Part")]
@@ -24,28 +22,24 @@ public class DialogueUI : MonoBehaviour
     int curIdx = 0; // Current Dialogue Index
     bool isStartDialogue = false; // Prevent Overlap Dialogue
     bool isDoneDialogue = false; // Show Next Dialouge Key
-    
-    public void LoadDiagloue()
-    {
-        curIdx = 0;
-        dialogue = DialogueManager.Instance.LoadDialogue(storyID);
-        if (dialogue == null)
-            return;
-        timeText.text = dialogue.storyTime;
-    }
 
+    #region Unity Life Cycle
+    private void Start()
+    {
+        DialogueManager.Instance.Dialogue_UI = this;
+    }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && !isStartDialogue)
-            StartDialogue();
-        if(Input.anyKeyDown && isDoneDialogue)
-        {
+        if (Input.anyKeyDown && isDoneDialogue)
             CheckNextDialogue();
-        }
     }
+    #endregion
 
+    #region Start Dialouge 
     public void StartDialogue()
     {
+        if (isStartDialogue)
+            return;
         if (dialogue == null)
             return;
         // Skip Btn
@@ -59,6 +53,15 @@ public class DialogueUI : MonoBehaviour
         StartCoroutine(DialogueCor());       
     }
 
+    public void LoadDiagloue()
+    {
+        curIdx = 0;
+        dialogue = DialogueManager.Instance.LoadDialogue(storyID);
+        if (dialogue == null)
+            return;
+        timeText.text = dialogue.storyTime;
+    }
+
     public IEnumerator DialogueCor()
     { 
         dialogueText.text = "";
@@ -68,30 +71,11 @@ public class DialogueUI : MonoBehaviour
         isDoneDialogue = true;
         skipTextObject.SetActive(true);
     }
+    #endregion
 
-    public IEnumerator DialogueTypeCor()
-    {
-        isDoneDialogue = false;
-        int len = dialogue.storyLines[curIdx].Length;
-        dialogueText.text = "";
-        for (int i = 0; i < len; i++)
-        {
-            dialogueText.text += dialogue.storyLines[curIdx][i];
-            yield return new WaitForSeconds(typeTime);
-        }
-        curIdx += 1;
-        if (isAutoDialouge)
-        {
-            yield return new WaitForSeconds(autoNextDialogueTime);
-            CheckNextDialogue();
-        }
-        else
-        {
-            isDoneDialogue = true;
-            skipTextObject.SetActive(true);
-        }
-    }
-
+    /// <summary>
+    /// Keep Dialogue
+    /// </summary>
     public void CheckNextDialogue()
     {
         int len = dialogue.storyLines.Count;
