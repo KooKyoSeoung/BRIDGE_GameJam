@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class InputManager
 {
+    public static bool isNeedInit = false;
     public Action keyAction = null;
 
     private bool isChangeOnce = true;
@@ -13,6 +14,11 @@ public class InputManager
     {
         if (Input.anyKey == false)
         {
+            if (isChangeOnce)
+            {
+                isChangeOnce = false;
+                isNeedInit = true;
+            }
             return;
         }
 
