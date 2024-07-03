@@ -106,7 +106,7 @@ public class TimeTravelItem : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            TimeTravelManager.Instance.player.ReachItem = this;
+            TimeTravelManager.Instance.PlayerTrigger.ReachItem = this;
         }
     }
 
@@ -114,7 +114,7 @@ public class TimeTravelItem : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            TimeTravelManager.Instance.player.ReachItem = null;
+            TimeTravelManager.Instance.PlayerTrigger.ReachItem = null;
         }
     }
     #endregion

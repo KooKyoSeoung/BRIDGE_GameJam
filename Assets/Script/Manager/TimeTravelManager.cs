@@ -6,7 +6,19 @@ public class TimeTravelManager : MonoBehaviour
 {
     public static TimeTravelManager Instance;
 
-    public testobj player;
+    [SerializeField] PlayerTriggerInputController playerTrigger = null;
+    public PlayerTriggerInputController PlayerTrigger 
+    { 
+        get 
+        {
+            if (playerTrigger == null)
+            {
+                GameObject player = GameObject.FindWithTag("Player");
+                playerTrigger = player.GetComponent<PlayerTriggerInputController>();
+            }        
+            return playerTrigger; 
+        } 
+    } 
 
     [SerializeField] TimeZoneType currentTimeZone;
     [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;

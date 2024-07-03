@@ -20,7 +20,6 @@ public class DialogueUI : MonoBehaviour
     public int StoryID { get { return storyID; } set { storyID = value; } }
     Dialogue dialogue = new Dialogue();
     int curIdx = 0; // Current Dialogue Index
-    bool isStartDialogue = false; // Prevent Overlap Dialogue
     bool isDoneDialogue = false; // Show Next Dialouge Key
 
     #region Unity Life Cycle
@@ -38,7 +37,7 @@ public class DialogueUI : MonoBehaviour
     #region Start Dialouge 
     public void StartDialogue()
     {
-        if (isStartDialogue)
+        if (DialogueManager.Instance.IsDialogue)
             return;
         if (dialogue == null)
             return;
@@ -48,7 +47,7 @@ public class DialogueUI : MonoBehaviour
 
         // Start Dialogue
         onoffUI.SetActive(true);
-        isStartDialogue = true;
+        DialogueManager.Instance.IsDialogue = true;
         LoadDiagloue();
         StartCoroutine(DialogueCor());       
     }
@@ -83,7 +82,7 @@ public class DialogueUI : MonoBehaviour
         if (curIdx >= len)
         {
             // 대화 종료
-            isStartDialogue = false;
+            DialogueManager.Instance.IsDialogue = false;
             isDoneDialogue = false;
             onoffUI.SetActive(false);
         }
