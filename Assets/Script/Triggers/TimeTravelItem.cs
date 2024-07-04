@@ -31,12 +31,6 @@ public class TimeTravelItem : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable() // Prevene Exception
-    {
-        if (!canInteraction)
-            gameObject.SetActive(false);
-    }
-
     private void Start()
     {
         InitInformation();
