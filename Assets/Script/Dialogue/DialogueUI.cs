@@ -11,7 +11,7 @@ public class DialogueUI : MonoBehaviour
     [SerializeField, Range(0f, 3.0f), Tooltip("다음 대화로 넘어갈 수 있게 해주는 속도")] float nextDialogueTime;
 
     [Header("개발자 Part")]
-    [SerializeField] GameObject onoffUI;
+    [SerializeField] GameObject onoffUIObject;
     [SerializeField] GameObject skipTextObject;
     [SerializeField] TextMeshProUGUI timeText;
     [SerializeField] TextMeshProUGUI dialogueText;
@@ -46,7 +46,7 @@ public class DialogueUI : MonoBehaviour
         skipTextObject.SetActive(false);
 
         // Start Dialogue
-        onoffUI.SetActive(true);
+        onoffUIObject.SetActive(true);
         DialogueManager.Instance.IsDialogue = true;
         LoadDiagloue();
         StartCoroutine(DialogueCor());       
@@ -84,7 +84,7 @@ public class DialogueUI : MonoBehaviour
             // 대화 종료
             DialogueManager.Instance.IsDialogue = false;
             isDoneDialogue = false;
-            onoffUI.SetActive(false);
+            onoffUIObject.SetActive(false);
         }
         else
         {
