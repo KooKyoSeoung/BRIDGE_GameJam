@@ -10,6 +10,7 @@ public class Interactable : MonoBehaviour
     private Rigidbody2D _rb2d;
     private TimeTravelItem _timeTravelItem;
     private Transform _originalParent;
+    private SpriteRenderer _spriteRenderer;
 
     private GameObject player;
     private PlayerControl playerControl;
@@ -25,6 +26,7 @@ public class Interactable : MonoBehaviour
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _timeTravelItem = GetComponent<TimeTravelItem>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -44,6 +46,10 @@ public class Interactable : MonoBehaviour
             playerControl = player.GetComponent<PlayerControl>();
             IsRopeJumped = false;
         }
+
+        //아웃라인 이니셜라이즈
+        if (_spriteRenderer != null)
+            _spriteRenderer.material.SetFloat("_OutlinePixelWidth", 0);
     }
 
     void Update()
