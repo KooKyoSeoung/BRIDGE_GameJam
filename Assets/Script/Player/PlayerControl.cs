@@ -177,6 +177,7 @@ public class PlayerControl : MonoBehaviour
         playerRigidbody.AddForce(new Vector2(moveHorizontal * 15, 15.0f), ForceMode2D.Impulse);
     }
 
+    #region TriggerEnter
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope"))
@@ -197,4 +198,5 @@ public class PlayerControl : MonoBehaviour
             isClimbing = false;
         }
     }
+    #endregion
 }
