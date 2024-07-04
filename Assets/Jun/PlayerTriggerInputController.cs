@@ -14,7 +14,6 @@ public class PlayerTriggerInputController : MonoBehaviour
 
     [SerializeField] private Color focusHighlightColor = Color.white;
 
-    
 
     void Update()
     {

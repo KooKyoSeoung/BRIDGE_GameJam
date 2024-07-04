@@ -11,6 +11,8 @@ public class Interactable : MonoBehaviour
     private TimeTravelItem _timeTravelItem;
     private Transform _originalParent;
 
+    private GameObject player;
+
     private void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
@@ -22,10 +24,10 @@ public class Interactable : MonoBehaviour
         if (interactableType == InteractableType.HeavyMovable)
         {
             _rb2d.bodyType = RigidbodyType2D.Static;
+            //player = GameObject.FindGameObjectsWithTag("Player");
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -42,6 +44,8 @@ public class Interactable : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 break;
             case InteractableType.HeavyMovable:
+                _rb2d.bodyType = RigidbodyType2D.Dynamic;
+                
                 break;
             case InteractableType.QuickInteraction:
                 break;

@@ -6,6 +6,11 @@ public class TimeTravelManager : MonoBehaviour
 {
     public static TimeTravelManager Instance;
 
+    [Header("기획 Part")]
+    [SerializeField, Tooltip("시작하는 타임라인")] TimeZoneType currentTimeZone;
+
+    [Header("프로그래밍 Part")]
+    [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;
     [SerializeField] PlayerTriggerInputController playerTrigger = null;
     public PlayerTriggerInputController PlayerTrigger 
     { 
@@ -19,14 +24,12 @@ public class TimeTravelManager : MonoBehaviour
             return playerTrigger; 
         } 
     } 
-
-    [SerializeField] TimeZoneType currentTimeZone;
-    [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;
     public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value; ChangeTimeZone(); } }
 
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
     public List<TimeTravelItem> TimeTravelItemList { get { return timeTravelItemList; } set { timeTravelItemList = value; } }
 
+    #region Unity Life Cycle
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +41,7 @@ public class TimeTravelManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    #endregion
 
     /// <summary>
     /// Call When you change TimeLine
