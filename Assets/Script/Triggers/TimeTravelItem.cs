@@ -99,23 +99,4 @@ public class TimeTravelItem : MonoBehaviour
         gameObject.SetActive(false);
         // Send Item Data 
     }
-
-
-    #region Collision Check (Trigger)
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            TimeTravelManager.Instance.PlayerTrigger.ReachItem = this;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            TimeTravelManager.Instance.PlayerTrigger.ReachItem = null;
-        }
-    }
-    #endregion
 }

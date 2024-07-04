@@ -171,12 +171,6 @@ public class PlayerControl : MonoBehaviour
         else coyoteCounter -= Time.deltaTime;
     }
 
-    private IEnumerator CoyoteCO()
-    {
-        yield return null;
-        isGround = false;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope"))
