@@ -14,7 +14,6 @@ public class PlayerTriggerInputController : MonoBehaviour
 
     [SerializeField] private Color focusHighlightColor = Color.white;
 
-    
 
     void Update()
     {
@@ -38,6 +37,12 @@ public class PlayerTriggerInputController : MonoBehaviour
                 currentInteractingObject = null;
             }
         }
+
+        if (currentInteractingObject != null && currentInteractingObject.IsHeavyItemDrop)
+            currentInteractingObject = null;
+
+        if (currentInteractingObject != null && currentInteractingObject.IsRopeJumped)
+            currentInteractingObject = null;
 
         // �ð� ��ȭ
         if (Input.GetKeyDown(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)

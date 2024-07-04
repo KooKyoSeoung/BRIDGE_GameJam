@@ -18,7 +18,6 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Vector2 groundCheckSize;
     [SerializeField] private float coyoteTime = .15f;
     private float moveHorizontal = 0.0f;
-    private float moveVertical = 0.0f;
     private float originGravity;
     private bool isGround = true;
     private float coyoteCounter;
@@ -33,9 +32,16 @@ public class PlayerControl : MonoBehaviour
     private float slopeAngle;
     private Vector2 slopePerp;
     private bool isSlope;
+
     private bool canClimb;
-    private bool isClimbing;
-    private bool isClimbSetOnce;
+
+    private float pushPullForce = 2.0f;
+    public GameObject HeldObject { get; set; }
+    public GameObject GripObject { get; set; }
+    public float PlayerStandPosY { get { return groundRay.point.y; } }
+    public bool IsSubscribing { get; private set; }
+    public bool IsClimbing { get; set; }
+    public Vector2 RopePos { get; set; }
 
     void Start()
     {
@@ -51,8 +57,7 @@ public class PlayerControl : MonoBehaviour
 
         originGravity = playerRigidbody.gravityScale;
 
-        Managers.Input.keyAction += OnPlayerMove;
-        Managers.Input.keyAction += OnPlayerJump;
+        PlayerSubscribe();
     }
 
     void Update()
@@ -64,21 +69,47 @@ public class PlayerControl : MonoBehaviour
         if (InputManager.isNeedInit)
         {
             InputManager.isNeedInit = false;
-            moveHorizontal = 0.0f;
+            //moveHorizontal = 0.0f;
         }
 
+        /*
         if (canClimb)
         {
             if (Input.GetKeyDown(interactionKey))
                 isClimbing = true;
-        }
+        }*/
 
-        if (isClimbing)
+        #region Climb
+        if (IsClimbing)
         {
             playerRigidbody.gravityScale = 0.0f;
-            playerCollider.isTrigger = true;
+            gameObject.transform.position = new Vector2(RopePos.x, gameObject.transform.position.y);
             float verticalInput = Input.GetAxis("Vertical");
-            playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+
+            if (transform.position.y >= RopePos.y)
+            {
+                if (verticalInput > 0)
+                    playerRigidbody.velocity = Vector2.zero;
+                else
+                    playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+            }
+            else
+                playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+
+            if (Input.GetKeyDown(moveLeftKey))
+                ClimbJump(-1);
+
+            if (Input.GetKeyDown(moveRightKey))
+                ClimbJump(1);
+        }
+        #endregion
+
+        if (HeldObject != null)
+        {
+            Vector2 force = new Vector2(1, 0) * (Input.GetAxis("Horizontal") * pushPullForce);
+            Vector2 velocityYOnly = new Vector2(0.0f, HeldObject.GetComponent<Rigidbody2D>().velocity.y);
+            HeldObject.GetComponent<Rigidbody2D>().velocity = force + velocityYOnly;
+            playerRigidbody.velocity = force;
         }
 
         if (moveHorizontal == 0.0f)
@@ -89,13 +120,28 @@ public class PlayerControl : MonoBehaviour
 
     void OnDisable()
     {
+        PlayerUnSubscribe();
+    }
+
+    #region PlayerActionActive
+    public void PlayerSubscribe()
+    {
+        IsSubscribing = true;
+        Managers.Input.keyAction += OnPlayerMove;
+        Managers.Input.keyAction += OnPlayerJump;
+    }
+
+    public void PlayerUnSubscribe()
+    {
+        IsSubscribing = false;
         Managers.Input.keyAction -= OnPlayerMove;
         Managers.Input.keyAction -= OnPlayerJump;
     }
+    #endregion
 
     private void OnPlayerJump()
     {
-        if (Input.GetKeyDown(jumpKey) && coyoteCounter > 0)
+        if (Input.GetKeyDown(jumpKey) && coyoteCounter > 0 && !IsClimbing)
         {
             playerRigidbody.velocity = Vector2.zero;
             playerRigidbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
@@ -137,6 +183,13 @@ public class PlayerControl : MonoBehaviour
                 isGround = true;
             }*/
 
+            if (IsClimbing && playerRigidbody.velocity.y < 0)
+            {
+                IsClimbing = false;
+                playerRigidbody.gravityScale = originGravity;
+                //playerCollider.isTrigger = false;
+            }
+
             slopePerp = Vector2.Perpendicular(groundRay.normal).normalized;
             slopeAngle = Vector2.Angle(groundRay.normal, Vector2.up);
 
@@ -151,11 +204,20 @@ public class PlayerControl : MonoBehaviour
             isGround = false;*/
     }
 
+    private void ClimbJump(int _direction)
+    {
+        GripObject.GetComponent<Interactable>().IsRopeJumped = true;
+        GripObject.GetComponent<Interactable>().EndInteraction();
+        moveHorizontal = _direction;
+        playerRigidbody.AddForce(new Vector2(moveHorizontal * 15, 10.0f), ForceMode2D.Impulse);
+    }
+
     private void GroundedCheck()
     {
         var ground = Physics2D.OverlapBox((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("Ground"));
+        var heavyItem = Physics2D.OverlapBox((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("HeavyItem"));
 
-        if (ground != null)
+        if (ground != null || heavyItem != null)
         {
             isGround = true;
         }
@@ -171,11 +233,14 @@ public class PlayerControl : MonoBehaviour
         else coyoteCounter -= Time.deltaTime;
     }
 
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope"))
         {
             canClimb = true;
+            climbCenterX = collision.transform.position.x;
+            boxSizeY = collision.transform.GetChild(0).position.y;
         }
     }
 
@@ -184,11 +249,10 @@ public class PlayerControl : MonoBehaviour
         if (collision.CompareTag("Rope"))
         {
             canClimb = false;
-            playerCollider.isTrigger = false;
             playerRigidbody.gravityScale = originGravity;
             isClimbing = false;
         }
-    }
+    }*/
 
     private void OnDrawGizmosSelected()
     {
