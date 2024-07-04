@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTrigger: {fileID: 0}
-  currentTimeZone: 0
+  currentTimeZone: 1
   timeTravelMaps:
   - {fileID: 0}
   - {fileID: 0}
