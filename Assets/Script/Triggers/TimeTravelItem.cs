@@ -18,62 +18,23 @@ public class TimeTravelItem : MonoBehaviour
     [Header("기획 Part")]
     [SerializeField, Tooltip("아이템이 존재하는 시간대")] TimeZoneType itemTimeZone;
     public TimeZoneType ItemTimeZone { get { return itemTimeZone; } }
+
+    [Header("플밍 Part")]
     [SerializeField, Tooltip("과거 사진")] Sprite pastTimeZoneSprite;
     [SerializeField, Tooltip("현재 사진")] Sprite presentTimeZoneSprite;
-
+    // Component
     SpriteRenderer spr;
-    [SerializeField] bool canInteraction = true;
-    public bool CanInteraction { get { return canInteraction; } }
-
+    
     #region Unity Life Cycle
     private void Awake()
     {
         spr = GetComponent<SpriteRenderer>();
     }
-
-    private void Start()
-    {
-        InitInformation();
-    }
-
-    /// <summary>
-    /// Call Once When you play game
-    /// </summary>
-    public void InitInformation()
-    {
-        TimeTravelManager.Instance.TimeTravelItemList.Add(this);
-        TimeZoneType _currentTimeZone = TimeTravelManager.Instance.CurrentTimeZone;
-        switch (itemTimeZone)
-        {
-            case TimeZoneType.Past:
-                if (_currentTimeZone == TimeZoneType.Present)
-                {
-                    gameObject.SetActive(false);
-                }
-                break;
-            case TimeZoneType.Present:
-                if (_currentTimeZone == TimeZoneType.Past)
-                {
-                    gameObject.SetActive(false);
-                }
-                break;
-            case TimeZoneType.AllTime:
-                if (_currentTimeZone == TimeZoneType.Past)
-                {
-                    spr.sprite = pastTimeZoneSprite;
-                }
-                else if (_currentTimeZone == TimeZoneType.Present)
-                {
-                    spr.sprite = presentTimeZoneSprite;
-                }
-                break;
-        }
-    }
-
     #endregion
 
-    public void ApplyTimeZone(TimeZoneType _currentTimeZone)
+    public bool ApplyTimeZone(TimeZoneType _currentTimeZone)
     {
+        // AllTime
         if(itemTimeZone==TimeZoneType.AllTime)
         {
             if(_currentTimeZone== TimeZoneType.Past)
@@ -84,13 +45,8 @@ public class TimeTravelItem : MonoBehaviour
             {
                 spr.sprite = presentTimeZoneSprite;
             }
+            return true;
         }
-    }
-
-    public void GetItem()
-    {
-        canInteraction = false;
-        gameObject.SetActive(false);
-        // Send Item Data 
+        return false;
     }
 }
