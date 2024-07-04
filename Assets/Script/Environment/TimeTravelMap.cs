@@ -18,6 +18,7 @@ public class TimeTravelMap : MonoBehaviour
 
     private void Start()
     {
+        tilemap.SetActive(true);
         TimeTravelManager.Instance.ChangeTimeZoneMap();
     }
 
