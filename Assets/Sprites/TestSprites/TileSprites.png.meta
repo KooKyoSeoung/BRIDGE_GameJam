@@ -318,7 +318,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_9
+      name: g7
       rect:
         serializedVersion: 2
         x: 16
@@ -339,7 +339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_10
+      name: g10
       rect:
         serializedVersion: 2
         x: 80
@@ -360,7 +360,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_11
+      name: g11
       rect:
         serializedVersion: 2
         x: 112
@@ -654,7 +654,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_25
+      name: g12
       rect:
         serializedVersion: 2
         x: 80
@@ -675,7 +675,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_26
+      name: g13
       rect:
         serializedVersion: 2
         x: 112
@@ -1158,7 +1158,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_49
+      name: g4
       rect:
         serializedVersion: 2
         x: 16
@@ -1179,7 +1179,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_50
+      name: g1
       rect:
         serializedVersion: 2
         x: 16
@@ -1200,7 +1200,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_51
+      name: g2
       rect:
         serializedVersion: 2
         x: 32
@@ -1221,7 +1221,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_52
+      name: g3
       rect:
         serializedVersion: 2
         x: 48
@@ -1242,7 +1242,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_53
+      name: g5
       rect:
         serializedVersion: 2
         x: 32
@@ -1263,7 +1263,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_54
+      name: g6
       rect:
         serializedVersion: 2
         x: 48
@@ -1284,7 +1284,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_55
+      name: g8
       rect:
         serializedVersion: 2
         x: 32
@@ -1305,7 +1305,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileSprites_56
+      name: g9
       rect:
         serializedVersion: 2
         x: 48
@@ -1569,8 +1569,6 @@ TextureImporter:
     nameFileIdTable:
       TileSprites_0: -1409565034
       TileSprites_1: -910872270
-      TileSprites_10: -1243733670
-      TileSprites_11: 2073390557
       TileSprites_12: -1960789749
       TileSprites_13: -926569964
       TileSprites_14: 336118779
@@ -1585,8 +1583,6 @@ TextureImporter:
       TileSprites_22: 942346139
       TileSprites_23: -429726735
       TileSprites_24: 2058740130
-      TileSprites_25: 1239337651
-      TileSprites_26: -125634379
       TileSprites_27: 1439610976
       TileSprites_28: 1370832379
       TileSprites_29: 2037818981
@@ -1609,15 +1605,7 @@ TextureImporter:
       TileSprites_45: -1741979958
       TileSprites_46: -1243472174
       TileSprites_47: 33177316
-      TileSprites_49: -1350737360
       TileSprites_5: 1283820465
-      TileSprites_50: 807393958
-      TileSprites_51: 2025588288
-      TileSprites_52: 301777348
-      TileSprites_53: 1934422925
-      TileSprites_54: -1327414
-      TileSprites_55: -895873151
-      TileSprites_56: 1198850348
       TileSprites_57: -363508068
       TileSprites_58: -661980354
       TileSprites_59: -337144941
@@ -1625,7 +1613,6 @@ TextureImporter:
       TileSprites_60: 1843884173
       TileSprites_7: 1458384213
       TileSprites_8: 415277268
-      TileSprites_9: 1121636227
       TileSprites_a1: -1946116759
       TileSprites_a2: 217351745
       TileSprites_a3: 456897640
@@ -1635,6 +1622,19 @@ TextureImporter:
       TileSprites_b3: -485089651
       TileSprites_b4: 350435842
       TileSprites_b5: -1879736940
+      g1: 2025588288
+      g10: -1243733670
+      g11: 2073390557
+      g12: 1239337651
+      g13: -125634379
+      g2: 301777348
+      g3: 1934422925
+      g4: 807393958
+      g5: -1327414
+      g6: -895873151
+      g7: 1121636227
+      g8: 1198850348
+      g9: -468094189
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
