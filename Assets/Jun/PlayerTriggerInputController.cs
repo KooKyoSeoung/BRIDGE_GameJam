@@ -38,6 +38,12 @@ public class PlayerTriggerInputController : MonoBehaviour
             }
         }
 
+        if (currentInteractingObject != null && currentInteractingObject.IsHeavyItemDrop)
+            currentInteractingObject = null;
+
+        if (currentInteractingObject != null && currentInteractingObject.IsRopeJumped)
+            currentInteractingObject = null;
+
         // �ð� ��ȭ
         if (Input.GetKeyDown(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)
         {
