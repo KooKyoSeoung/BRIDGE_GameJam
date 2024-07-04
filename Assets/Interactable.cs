@@ -10,13 +10,13 @@ public class Interactable : MonoBehaviour
     private Rigidbody2D _rb2d;
     private TimeTravelItem _timeTravelItem;
     private Transform _originalParent;
-
-    private GameObject player;
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _timeTravelItem = GetComponent<TimeTravelItem>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -24,10 +24,14 @@ public class Interactable : MonoBehaviour
         if (interactableType == InteractableType.HeavyMovable)
         {
             _rb2d.bodyType = RigidbodyType2D.Static;
-            //player = GameObject.FindGameObjectsWithTag("Player");
         }
+
+        //아웃라인 이니셜라이즈
+        if (_spriteRenderer != null)
+            _spriteRenderer.material.SetFloat("_OutlinePixelWidth", 0);
     }
 
+    // Update is called once per frame
     void Update()
     {
         
@@ -44,8 +48,6 @@ public class Interactable : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 break;
             case InteractableType.HeavyMovable:
-                _rb2d.bodyType = RigidbodyType2D.Dynamic;
-                
                 break;
             case InteractableType.QuickInteraction:
                 break;

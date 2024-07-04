@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MovePlatform : MonoBehaviour
 {
-    [Header("±âÈ¹ÀÚ Part")]
-    [SerializeField, Range(2f, 10f), Tooltip("´Ù¸¥ ÁöÁ¡±îÁö µµ´ÞÇÏ´Â ½Ã°£")] float reachTime;
-    [SerializeField, Range(0f, 10f), Tooltip("¸ØÃçÀÖ´Â ½Ã°£")] float stopTime;
+    [Header("ï¿½ï¿½È¹ï¿½ï¿½ Part")]
+    [SerializeField, Range(2f, 10f), Tooltip("ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ã°ï¿½")] float reachTime;
+    [SerializeField, Range(0f, 10f), Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ã°ï¿½")] float stopTime;
 
-    [Header("ÇÁ·Î±×·¡¹Ö Part")]
+    [Header("ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ Part")]
     int currentPoint = 0;
     int pointCnt = 0;
     [SerializeField] Vector2[] movePos;
@@ -22,7 +22,7 @@ public class MovePlatform : MonoBehaviour
 
     private void Start()
     {
-        // ´ë±â½Ã°£ ÇÈ½ºµÇ¸é »ç¿ë
+        // ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½È½ï¿½ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½
         //delayTime = new WaitForSeconds(stopTime);
         StartCoroutine(MovePlatformCor());
     }
