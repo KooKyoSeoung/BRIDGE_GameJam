@@ -12,6 +12,14 @@ public class Interactable : MonoBehaviour
     private Transform _originalParent;
 
     private GameObject player;
+    private PlayerControl playerControl;
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float rayDistance = 5.0f;
+    private RaycastHit2D hit;
+    private float _originalGravity;
+
+    public bool IsHeavyItemDrop { get; private set; }
+    public bool IsRopeJumped { get; set; }
 
     private void Awake()
     {
@@ -24,13 +32,36 @@ public class Interactable : MonoBehaviour
         if (interactableType == InteractableType.HeavyMovable)
         {
             _rb2d.bodyType = RigidbodyType2D.Static;
-            //player = GameObject.FindGameObjectsWithTag("Player");
+            _rb2d.mass = 1.0f;
+            _rb2d.drag = 0.0f;
+            _rb2d.gravityScale = 5.0f;
+            player = GameObject.Find("Player");
+            playerControl = player.GetComponent<PlayerControl>();
+        }
+        else if(interactableType == InteractableType.Rope)
+        {
+            player = GameObject.Find("Player");
+            playerControl = player.GetComponent<PlayerControl>();
+            IsRopeJumped = false;
         }
     }
 
     void Update()
     {
-        
+        if (interactableType == InteractableType.HeavyMovable)
+        {
+            hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundMask);
+            Debug.DrawLine(hit.point, hit.point + hit.normal, Color.red);
+
+            if (Vector3.Distance(player.transform.position, transform.position) > 2.0f && !IsHeavyItemDrop)
+            {
+                HeavyInteractionEnd();
+                IsHeavyItemDrop = true;
+            }
+
+            if (IsHeavyItemDrop && hit)
+                _rb2d.bodyType = RigidbodyType2D.Static;
+        }
     }
 
     public void StartInteraction()
@@ -44,12 +75,24 @@ public class Interactable : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 break;
             case InteractableType.HeavyMovable:
-                _rb2d.bodyType = RigidbodyType2D.Dynamic;
-                
+                if (Mathf.Abs(hit.point.y - playerControl.PlayerStandPosY) < 0.1f)
+                {
+                    IsHeavyItemDrop = false;
+                    _rb2d.bodyType = RigidbodyType2D.Dynamic;
+                    playerControl.HeldObject = this.gameObject;
+                    if (playerControl.IsSubscribing)
+                        playerControl.PlayerUnSubscribe();
+                }
                 break;
             case InteractableType.QuickInteraction:
                 break;
             case InteractableType.Rope:
+                IsRopeJumped = false;
+                playerControl.IsClimbing = true;
+                _originalGravity = playerControl.GetComponent<Rigidbody2D>().gravityScale;
+                playerControl.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
+                playerControl.GripObject = this.gameObject;
+                playerControl.RopePos = new Vector2(transform.position.x, transform.GetChild(0).position.y);
                 break;
             default:
                 break;
@@ -65,14 +108,32 @@ public class Interactable : MonoBehaviour
                 transform.SetParent(_originalParent);
                 break;
             case InteractableType.HeavyMovable:
+                HeavyInteractionEnd();
+                _rb2d.bodyType = RigidbodyType2D.Static;
                 break;
             case InteractableType.QuickInteraction:
                 break;
             case InteractableType.Rope:
+                RopeInteractionEnd();
                 break;
             default:
                 break;
         }
+    }
+
+    public void HeavyInteractionEnd()
+    {
+        //_rb2d.bodyType = RigidbodyType2D.Static;
+        playerControl.HeldObject = null;
+        if (!playerControl.IsSubscribing)
+            playerControl.PlayerSubscribe();
+    }
+
+    public void RopeInteractionEnd()
+    {
+        playerControl.IsClimbing = false;
+        playerControl.GetComponent<Rigidbody2D>().gravityScale = _originalGravity;
+        playerControl.GripObject = null;
     }
 }
 
