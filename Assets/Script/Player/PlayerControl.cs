@@ -31,6 +31,7 @@ public class PlayerControl : MonoBehaviour
     private bool isSlope;
 
     private float climbCenterX;
+    private float boxSizeY;
     private bool canClimb;
     private bool isClimbing;
 
@@ -73,7 +74,16 @@ public class PlayerControl : MonoBehaviour
             playerRigidbody.gravityScale = 0.0f;
             gameObject.transform.position = new Vector2(climbCenterX, gameObject.transform.position.y);
             float verticalInput = Input.GetAxis("Vertical");
-            playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+            
+            if (transform.position.y >= boxSizeY)
+            {
+                if (verticalInput > 0)
+                    playerRigidbody.velocity = Vector2.zero;
+                else
+                    playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+            }
+            else
+                playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
 
             if (Input.GetKeyDown(moveLeftKey))
                 ClimbJump(-1);
@@ -164,7 +174,7 @@ public class PlayerControl : MonoBehaviour
         playerRigidbody.gravityScale = originGravity;
         isClimbing = false;
         moveHorizontal = _direction;
-        playerRigidbody.velocity = new Vector2(moveHorizontal * 20, 20.0f);
+        playerRigidbody.AddForce(new Vector2(moveHorizontal * 15, 15.0f), ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -173,6 +183,8 @@ public class PlayerControl : MonoBehaviour
         {
             canClimb = true;
             climbCenterX = collision.transform.position.x;
+            boxSizeY = collision.transform.GetChild(0).position.y;
+            Debug.Log(boxSizeY);
         }
     }
 
