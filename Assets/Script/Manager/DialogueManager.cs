@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     public bool IsDialogue { get { return isDialogue; } set { isDialogue = value; /*To Do : Stop Player*/ } }
     public DialogueUI Dialogue_UI { get; set; } = null;
     public DialogueTrigger Dialogue_Trigger { get; set; } = null;
-
+    public IndicatorTrigger Indicator_Trigger { get; set; } = null;
     #region Unity Life Cycle
     private void Awake()
     {

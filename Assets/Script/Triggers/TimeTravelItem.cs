@@ -119,6 +119,7 @@ public class TimeTravelItem : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             TimeTravelManager.Instance.PlayerTrigger.ReachItem = this;
+            DialogueManager.Instance.Indicator_Trigger.OnOffIndicator(true, transform.position);
             spriteOutline.enabled = true;
         }
     }
@@ -128,6 +129,7 @@ public class TimeTravelItem : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             TimeTravelManager.Instance.PlayerTrigger.ReachItem = null;
+            DialogueManager.Instance.Indicator_Trigger.OnOffIndicator(false, transform.position);
             spriteOutline.enabled = false;
         }
     }
