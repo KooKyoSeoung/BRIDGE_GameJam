@@ -76,7 +76,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         var allNearInteractables = Physics2D.OverlapCircleAll(transform.position, maxInteractDistance)
             .Where(x => x.GetComponent<Interactable>() != null)
             .Select(x => x.GetComponent<Interactable>()) //Interactable만 남김
-            .OrderBy(x => (Vector2) transform.position -  (Vector2) x.transform.position) //플레이어로부터 거리 오름차순으로 정렬
+            .OrderBy(x => ((Vector2) transform.position -  (Vector2) x.transform.position).magnitude) //플레이어로부터 거리 오름차순으로 정렬
             .ToList();
 
         if (allNearInteractables.Count > 0)
