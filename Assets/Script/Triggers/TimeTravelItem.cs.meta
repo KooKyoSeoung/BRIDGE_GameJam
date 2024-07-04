@@ -3,7 +3,10 @@ guid: 2d20dd14a77d8a248bc1b5be38aea10b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - pastTimeZoneSprite: {instanceID: 0}
+  - presentTimeZoneSprite: {instanceID: 0}
+  - spriteOutLineMat: {fileID: 2100000, guid: 839bf7d5d5adb8a42915acecdf7ee170, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

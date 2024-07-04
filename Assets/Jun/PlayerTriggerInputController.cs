@@ -4,21 +4,44 @@ using UnityEngine;
 
 public class PlayerTriggerInputController : MonoBehaviour
 {
-    // Load Position : transform.position = SaveManager.Instance.LoadSavePoint();
+    [Header("기획 Part")]
+    [SerializeField, Tooltip("시간여행 키 누르는 시간")] float travelPressTime;
+    
     public TimeTravelItem ReachItem { get; set; } = null;
+
+    bool isTimeTravel = false; 
+    float travelPressTimer = 0;
+
+    #region Unity Life Cycle
     void Update()
     {
-        // 아이템 획득
+        #region GetItem
         if (Input.GetKeyDown(KeyCode.F) && ReachItem != null)
         {
             ReachItem.GetItem();
             ReachItem = null;
         }
-        // 시간 변화
-        if (Input.GetKeyDown(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)
+        #endregion
+
+        #region Time Travel
+        if (!isTimeTravel && Input.GetKey(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)
         {
+            travelPressTimer += Time.deltaTime;
             ChangeTimeZone();
         }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            travelPressTimer = 0;
+            isTimeTravel = false;
+        }
+        #endregion
+
+        #region Reset
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = SaveManager.Instance.LoadSavePoint();
+        }
+        #endregion
     }
 
     public void ChangeTimeZone()
@@ -28,13 +51,18 @@ public class PlayerTriggerInputController : MonoBehaviour
             DialogueManager.Instance.Dialogue_Trigger.Interaction();
             return;
         }
-        if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
+        if (travelPressTimer >= travelPressTime)
         {
-            TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Present;
-        }
-        else if(TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
-        {
-            TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Past;
+            isTimeTravel = true;
+            if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
+            {
+                TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Present;
+            }
+            else if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
+            {
+                TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Past;
+            }
         }
     }
+    #endregion
 }
