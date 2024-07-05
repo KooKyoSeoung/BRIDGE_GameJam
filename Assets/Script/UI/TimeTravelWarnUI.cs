@@ -20,6 +20,11 @@ public class TimeTravelWarnUI : MonoBehaviour
 
     public void Warning()
     {
+        int randNum = Random.Range(0, 2);
+        if (randNum == 0)
+            Managers.Sound.PlaySFX("TimeChangeFail01");
+        else
+            Managers.Sound.PlaySFX("TimeChangeFail02");
         if (isFade)
         {
             StopAllCoroutines();

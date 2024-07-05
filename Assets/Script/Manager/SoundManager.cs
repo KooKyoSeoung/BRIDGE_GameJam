@@ -24,6 +24,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] float bgmVolume;
     [SerializeField] float sfxVolume;
 
+
     private void Awake()
     {
         dic_BGM = new Dictionary<string, AudioClip>();
@@ -164,5 +165,12 @@ public class SoundManager : MonoBehaviour
     public bool CheckTypeWriteSFXPlayNow()
     {
         return typeWritePlayer.isPlaying;
+    }
+
+    public AudioClip GetSFXClip(string _clipName)
+    {
+        if (dic_SFX.ContainsKey(_clipName))
+            return dic_SFX[_clipName];
+        return null;
     }
 }

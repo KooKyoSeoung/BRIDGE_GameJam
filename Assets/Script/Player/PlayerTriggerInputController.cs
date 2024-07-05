@@ -21,6 +21,8 @@ public class PlayerTriggerInputController : MonoBehaviour
     // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
     bool isOverlapMap = false;
     public bool IsOverlapMap { get { return isOverlapMap; } set { isOverlapMap = value; } }
+
+    [SerializeField] ParticleSystem travelParticle;
     
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
@@ -112,6 +114,8 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (pressSpaceTimer >= pressSpaceTime)
         {
             isOverlapSpace = true;
+            travelParticle.Play();
+            Managers.Sound.PlaySFX("TimeChange");
             if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
             {
                 TimeTravelItem currentTravelItem = null;
