@@ -1323,10 +1323,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b17d112b661529448248f9b20f0d068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  array_sfx: []
+  array_sfx:
+  - name: City
+    clip: {fileID: 8300000, guid: 4714d4569b7d1564cb2d473f69ae19b8, type: 3}
+  - name: Forest
+    clip: {fileID: 8300000, guid: bc2d114187404404297504b11ee78783, type: 3}
+  - name: DinoBreath01
+    clip: {fileID: 8300000, guid: 73524e1015fa0ba4ebe67fa816483131, type: 3}
+  - name: DinoBreath02
+    clip: {fileID: 8300000, guid: a59e439d2f5666c488e2199986d66dee, type: 3}
+  - name: DinoBreath03
+    clip: {fileID: 8300000, guid: fadddf1e8ee865244aee0dd79cc41cf7, type: 3}
+  - name: DinoBreath04
+    clip: {fileID: 8300000, guid: 5dce342e75659b34bb61a2d9c061fce0, type: 3}
+  - name: DinoSlobber
+    clip: {fileID: 8300000, guid: 278368d26f62d284ab784fa78eafd040, type: 3}
+  - name: DinoMeet
+    clip: {fileID: 8300000, guid: edfa3342886b8494fba42d542d839290, type: 3}
+  - name: OffBtn
+    clip: {fileID: 8300000, guid: 42a8baf0458905040a97430e2da0cecf, type: 3}
+  - name: OnBtn
+    clip: {fileID: 8300000, guid: 769b0194905746343aaa2df1938d1be3, type: 3}
+  - name: DoorClose
+    clip: {fileID: 8300000, guid: b40a4b398e36d8e46a4eafecbd874cc4, type: 3}
+  - name: DoorOpen
+    clip: {fileID: 8300000, guid: ba4ebeddd6ee0ee42bcd5c946e10c1c1, type: 3}
+  - name: MachineFall
+    clip: {fileID: 8300000, guid: 86f68ea513356444684181f8474cc55c, type: 3}
+  - name: MachinePull01
+    clip: {fileID: 8300000, guid: 7c1df16fb37971f4a8040f289fd07b02, type: 3}
+  - name: MachinePull02
+    clip: {fileID: 8300000, guid: d0fa8a6afb4c5bd47bc909de8829a378, type: 3}
+  - name: MachinePull03
+    clip: {fileID: 8300000, guid: f698cdc2cb7788644b205c94d47e0b42, type: 3}
+  - name: Platform
+    clip: {fileID: 8300000, guid: fd3b56c3d12b79448a7a3d73967e3e34, type: 3}
+  - name: PlatformRun
+    clip: {fileID: 8300000, guid: 3e7b7ea208025e44ab7fa16ec1ddb421, type: 3}
+  - name: PlatformStop
+    clip: {fileID: 8300000, guid: 82b49b2349e17cb48a9b5a909d9133ff, type: 3}
+  - name: FootStep01
+    clip: {fileID: 8300000, guid: 59c219df74f35694eac15bef83f839fc, type: 3}
+  - name: FootStep02
+    clip: {fileID: 8300000, guid: f16b28e9993a0134790ede7ef10bfb08, type: 3}
+  - name: FootStep03
+    clip: {fileID: 8300000, guid: 11709e74bc4f58d4eb4c9e020ad97f0b, type: 3}
+  - name: FootStep04
+    clip: {fileID: 8300000, guid: 04b7de0e171f113429319870a1cdeb4f, type: 3}
+  - name: FootStep05
+    clip: {fileID: 8300000, guid: 015719014adca3243bd333fe43fb9068, type: 3}
+  - name: Jump
+    clip: {fileID: 8300000, guid: df916b25ab053a6449a39e43b72973e8, type: 3}
+  - name: Land
+    clip: {fileID: 8300000, guid: 7d4f24f1f308e544b92f7ddad375e556, type: 3}
+  - name: TimeChange
+    clip: {fileID: 8300000, guid: aaef278b9fca6d945beaf3b8056f356d, type: 3}
+  - name: TimeChangeFail01
+    clip: {fileID: 8300000, guid: b5bb8b386a6fee048899378c8dc6a1bb, type: 3}
+  - name: TimeChangeFail02
+    clip: {fileID: 8300000, guid: 029344d1651854441a439d8f2c294b4c, type: 3}
   array_bgm:
   - name: TitleBgm
-    clip: {fileID: 8300000, guid: 3dbafbd81f3791643b65cdb7610f628f, type: 3}
+    clip: {fileID: 8300000, guid: 33a08d85282c4914eac65a031b926f5e, type: 3}
+  - name: TitleBgm2
+    clip: {fileID: 8300000, guid: f7715532689fbfb48bb0189eeadba22d, type: 3}
   bgmPlayer: {fileID: 23387530}
   sfxPlayer: {fileID: 516177834}
   typeWritePlayer: {fileID: 364326518}
