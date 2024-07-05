@@ -15,6 +15,6 @@ public class ReloadSceneUI : MonoBehaviour
     {
 
         yield return new WaitForSeconds(timer);
-        SceneManager.LoadScene("SungJun");
+        SceneManager.LoadScene(1);
     }
 }
