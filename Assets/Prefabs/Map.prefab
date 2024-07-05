@@ -59681,8 +59681,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7319e793b672149b9d5015789c0140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  propParent: {fileID: 4650556993488957351}
+  currentTime: 0
   tilemap: {fileID: 4650556992954194201}
+  prop: {fileID: 4650556993488957351}
 --- !u!1 &4650556993295668621
 GameObject:
   m_ObjectHideFlags: 0
@@ -59729,8 +59730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7319e793b672149b9d5015789c0140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  propParent: {fileID: 4650556993655092395}
+  currentTime: 0
   tilemap: {fileID: 4650556992915304115}
+  prop: {fileID: 4650556993655092395}
 --- !u!1 &4650556993488957351
 GameObject:
   m_ObjectHideFlags: 0

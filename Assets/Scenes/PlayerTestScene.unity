@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1592312866458579631, guid: 7cc1009af897859419882e1c42ef1ec8, type: 3}
+      propertyPath: currentTimeZone
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1592312866458579634, guid: 7cc1009af897859419882e1c42ef1ec8, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -1125,7 +1129,6 @@ MonoBehaviour:
   itemTimeZone: 0
   pastTimeZoneSprite: {fileID: 0}
   presentTimeZoneSprite: {fileID: 0}
-  canInteraction: 1
 --- !u!1001 &1254864488
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,37 +5,74 @@ using UnityEngine.Tilemaps;
 
 public class TimeTravelMap : MonoBehaviour
 {
-    [SerializeField, Tooltip("소품들의 부모")] GameObject propParent;
-    [SerializeField, Tooltip("타일맵")] GameObject tilemap;
-    SpriteRenderer[] sprs;
-    TilemapRenderer tmr;
+    [SerializeField] TimeZoneType currentTime;
+    [SerializeField] GameObject tilemap;
+    [SerializeField] GameObject prop;
 
+    TilemapRenderer tileRenderer;
+    TilemapCollider2D tileCollider;
+    SpriteRenderer[] propSprites;
+    Collider2D[] propColliders;
+
+    #region Unity Life Cycle
     private void Awake()
     {
-        sprs = propParent.GetComponentsInChildren<SpriteRenderer>();
-        tmr = tilemap.GetComponent<TilemapRenderer>();
-    }
-
-    private void Start()
-    {
-        tilemap.SetActive(true);
-        TimeTravelManager.Instance.ChangeTimeZoneMap();
-    }
-
-    public void ChangeOrderInLayer(int _layer)
-    {
-        // TileMap
-        if (tmr == null)
-            tmr = tilemap.GetComponent<TilemapRenderer>();
-        tmr.sortingOrder = _layer;
-
-        // Prop
-        if (sprs == null)
-            sprs = propParent.GetComponentsInChildren<SpriteRenderer>();
-        int sprsCnt = sprs.Length;
-        for(int idx = 0; idx< sprsCnt; idx++)
+        if (tilemap != null)
         {
-            sprs[idx].sortingOrder = _layer;
+            tileRenderer = tilemap.GetComponent<TilemapRenderer>();
+            tileCollider = tilemap.GetComponent<TilemapCollider2D>();
+        }
+        if (prop != null)
+        {
+            propSprites = prop.GetComponentsInChildren<SpriteRenderer>();
+            propColliders = prop.GetComponentsInChildren<Collider2D>();
+        }
+    }
+    #endregion
+
+    public void ApplyTimeZone()
+    {
+        if(TimeTravelManager.Instance.CurrentTimeZone== currentTime)
+        {
+            // Prop
+            //Sprite
+            int sprCnt = propSprites.Length;
+            for(int sprIdx= 0; sprIdx < sprCnt; sprIdx++)
+            {
+                propSprites[sprIdx].enabled = true;
+            }
+            //Collider
+            int collCnt = propColliders.Length;
+            for (int collIdx = 0; collIdx < collCnt; collIdx++)
+            { 
+                propColliders[collIdx].isTrigger = false;
+            }
+
+            // TileMap
+            tileRenderer.enabled = true;
+            tileCollider.isTrigger = false;
+            tileCollider.usedByComposite = true;
+        }
+        else
+        {
+            //Prop
+            //Sprite
+            int sprCnt = propSprites.Length;
+            for (int sprIdx = 0; sprIdx < sprCnt; sprIdx++)
+            {
+                propSprites[sprIdx].enabled = true;
+            }
+            //Collider
+            int collCnt = propColliders.Length;
+            for (int collIdx = 0; collIdx < collCnt; collIdx++)
+            {
+                propColliders[collIdx].isTrigger = false;
+            }
+
+            // TileMap
+            tileRenderer.enabled = false;
+            tileCollider.usedByComposite = false;
+            tileCollider.isTrigger = true;
         }
     }
 }

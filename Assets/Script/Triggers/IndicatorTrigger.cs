@@ -10,11 +10,6 @@ public class IndicatorTrigger : MonoBehaviour
     private Transform _targetTransform;
     private bool _isActive = false;
 
-    private void Start()
-    {
-        DialogueManager.Instance.Indicator_Trigger = this;
-    }
-
     public void OnOffIndicator(bool _isActive, Transform _target)
     {
         this._isActive = _isActive;
@@ -24,7 +19,6 @@ public class IndicatorTrigger : MonoBehaviour
             indicatorTriggerObject.transform.position = (Vector2)_targetTransform.position + Vector2.up * upValue;
         }
         indicatorTriggerObject.gameObject.SetActive(_isActive);
-
     }
 
     private void Update()

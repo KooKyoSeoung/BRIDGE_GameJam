@@ -4,94 +4,86 @@ using UnityEngine;
 
 public class TimeTravelManager : MonoBehaviour
 {
+    // Singleton
     public static TimeTravelManager Instance;
 
     [Header("기획 Part")]
     [SerializeField, Tooltip("시작하는 타임라인")] TimeZoneType currentTimeZone;
+    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value;} }
 
     [Header("프로그래밍 Part")]
     [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;
-    [SerializeField] PlayerTriggerInputController playerTrigger = null;
-    public PlayerTriggerInputController PlayerTrigger 
-    { 
-        get 
-        {
-            if (playerTrigger == null)
-            {
-                GameObject player = GameObject.FindWithTag("Player");
-                playerTrigger = player.GetComponent<PlayerTriggerInputController>();
-            }        
-            return playerTrigger; 
-        } 
-    } 
-    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value; ChangeTimeZone(); } }
+    [SerializeField] GameObject interactionParent;
 
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
-    public List<TimeTravelItem> TimeTravelItemList { get { return timeTravelItemList; } set { timeTravelItemList = value; } }
-
+    
     #region Unity Life Cycle
     private void Awake()
     {
+        // Singleton
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this.gameObject);
+
+        // Link Travel Items
+        TimeTravelItem[] travelItems = interactionParent.GetComponentsInChildren<TimeTravelItem>();
+        int travelCnt = travelItems.Length;
+        for(int idx=0; idx<travelCnt; idx++)
+        {
+            timeTravelItemList.Add(travelItems[idx]);
         }
+    }
+
+    private void Start()
+    {
+        // Set TimeZone Once
+        if (currentTimeZone == TimeZoneType.None)
+            return;
+        ChangeTimeZone(currentTimeZone);
     }
     #endregion
 
     /// <summary>
-    /// Call When you change TimeLine
+    /// Use This When you Change TimeZone
     /// </summary>
-    public void ChangeTimeZone()
+    public void ChangeTimeZone(TimeZoneType _changeType , TimeTravelItem _excludeTimeTravelItem = null)
     {
-        ChangeTimeZoneItem();
+        currentTimeZone = _changeType;
+        ChangeTimeZoneItem(_excludeTimeTravelItem);
         ChangeTimeZoneMap();
     }
 
-    public void ChangeTimeZoneItem()
+    #region Change TimeZone
+    public void ChangeTimeZoneItem(TimeTravelItem _excludeTimeTravelItem = null)
     {
         int timeTravelItemCnt = timeTravelItemList.Count;
-        for (int idx = 0; idx < timeTravelItemCnt; idx++)
-        {
-            TimeTravelItem _travelItem = timeTravelItemList[idx];
-            TimeZoneType _itemTimeZone = _travelItem.ItemTimeZone;
-            switch (_itemTimeZone)
+        if (_excludeTimeTravelItem == null) {
+            for (int idx = 0; idx < timeTravelItemCnt; idx++)
             {
-                case TimeZoneType.Past:
-                    if (currentTimeZone == TimeZoneType.Present)
-                    {
-                        _travelItem.gameObject.SetActive(false);
-                    }
+                if (!timeTravelItemList[idx].ApplyTimeZone(currentTimeZone))
+                {
+                    if (timeTravelItemList[idx].ItemTimeZone == currentTimeZone)
+                        timeTravelItemList[idx].gameObject.SetActive(true);
                     else
-                    {
-                        if (_travelItem.CanInteraction)
-                        {
-                            _travelItem.gameObject.SetActive(true);
-                            _travelItem.ApplyTimeZone(currentTimeZone);
-                        }
-                    }
-                    break;
-                case TimeZoneType.Present:
-                    if (currentTimeZone == TimeZoneType.Past)
-                    {
-                        _travelItem.gameObject.SetActive(false);
-                    }
+                        timeTravelItemList[idx].gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            for (int idx = 0; idx < timeTravelItemCnt; idx++)
+            {
+                TimeTravelItem _travelItem = timeTravelItemList[idx];
+                if (_travelItem == _excludeTimeTravelItem)
+                    continue;
+                if (!timeTravelItemList[idx].ApplyTimeZone(currentTimeZone))
+                {
+                    if (timeTravelItemList[idx].ItemTimeZone == currentTimeZone)
+                        timeTravelItemList[idx].gameObject.SetActive(true);
                     else
-                    {
-                        if (_travelItem.CanInteraction)
-                        {
-                            _travelItem.gameObject.SetActive(true);
-                            _travelItem.ApplyTimeZone(currentTimeZone);
-                        }
-                    }
-                    break;
-                case TimeZoneType.AllTime:
-                    _travelItem.ApplyTimeZone(currentTimeZone);
-                    break;
+                        timeTravelItemList[idx].gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -100,17 +92,14 @@ public class TimeTravelManager : MonoBehaviour
     {
         if (currentTimeZone == TimeZoneType.Past)
         {
-            timeTravelMaps[(int)TimeZoneType.Past].gameObject.SetActive(true);
-            timeTravelMaps[(int)TimeZoneType.Present].ChangeOrderInLayer(0);
-            timeTravelMaps[(int)TimeZoneType.Present].gameObject.SetActive(false);
-            timeTravelMaps[(int)TimeZoneType.Past].ChangeOrderInLayer(1);
+            timeTravelMaps[0].ApplyTimeZone();
+            timeTravelMaps[1].ApplyTimeZone();
         }
         else if (currentTimeZone == TimeZoneType.Present)
         {
-            timeTravelMaps[(int)TimeZoneType.Present].gameObject.SetActive(true);
-            timeTravelMaps[(int)TimeZoneType.Past].gameObject.SetActive(false);
-            timeTravelMaps[(int)TimeZoneType.Past].ChangeOrderInLayer(0);
-            timeTravelMaps[(int)TimeZoneType.Present].ChangeOrderInLayer(1);
+            timeTravelMaps[1].ApplyTimeZone();
+            timeTravelMaps[0].ApplyTimeZone();
         }
     }
+    #endregion
 }
