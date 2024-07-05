@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeTravelManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class TimeTravelManager : MonoBehaviour
 
     [Header("기획 Part")]
     [SerializeField, Tooltip("시작하는 타임라인")] TimeZoneType currentTimeZone;
-    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value;} }
+    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } }
 
     [Header("프로그래밍 Part")]
     [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;
@@ -43,9 +44,25 @@ public class TimeTravelManager : MonoBehaviour
         // Set TimeZone Once
         if (currentTimeZone == TimeZoneType.None)
             return;
-        ChangeTimeZone(currentTimeZone);
+        // Load Save Data
+        LoadTimeData();
     }
     #endregion
+
+    public void LoadTimeData(bool _isReLoad = false)
+    {
+        if (_isReLoad)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }
+        else
+        {
+            TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
+            PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
+            ChangeTimeZone(_curTimeZone);
+        }
+    }
 
     /// <summary>
     /// Use This When you Change TimeZone
