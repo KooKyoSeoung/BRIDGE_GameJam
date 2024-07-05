@@ -21,6 +21,7 @@ public class TimeTravelMap : MonoBehaviour
         {
             tileRenderer = tilemap.GetComponent<TilemapRenderer>();
             tileCollider = tilemap.GetComponent<TilemapCollider2D>();
+            tilemap.AddComponent<TimeTravelColliderChecker>();
         }
         if (prop != null)
         {

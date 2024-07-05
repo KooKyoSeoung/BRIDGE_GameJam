@@ -39,6 +39,7 @@ public class TimeTravelItem : MonoBehaviour
         {
             itemColliders = GetComponentsInChildren<Collider2D>();
             rb = GetComponent<Rigidbody2D>();
+            gameObject.AddComponent<TimeTravelColliderChecker>();
             defaultType = rb.bodyType;
         }
     }
@@ -113,10 +114,10 @@ public class TimeTravelItem : MonoBehaviour
         int listCnt = collList.Count;
         for(int idx=1; idx<listCnt; idx++)
         {
-            if (collList[idx].CompareTag("Ground"))
-            {
+            if (collList[idx].GetComponent<TimeTravelColliderChecker>() != null)
                 return false;
-            }
+            if (collList[idx].CompareTag("Ground"))
+                return false;
         }
         return true;
     }

@@ -21,7 +21,11 @@ public class TimeTravelWarnUI : MonoBehaviour
     public void Warning()
     {
         if (isFade)
+        {
             StopAllCoroutines();
+            StartCoroutine(TransparentCor());
+            return;
+        }
         StartCoroutine(OpaqueCor());
     }
 

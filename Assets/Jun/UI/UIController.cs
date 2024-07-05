@@ -51,9 +51,12 @@ public class UIController : MonoBehaviour
             InGame_UI.OnOffUI();
         }
         #endregion
+
+        #region Reset Scene
         if (Input.GetKeyDown(KeyCode.R) && !DialogueManager.Instance.IsDialogue)
         {
             TimeTravelManager.Instance.LoadTimeData();
         }
+        #endregion
     }
 }
