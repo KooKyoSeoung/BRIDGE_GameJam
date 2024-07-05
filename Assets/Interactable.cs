@@ -141,6 +141,12 @@ public class Interactable : MonoBehaviour
         playerControl.GetComponent<Rigidbody2D>().gravityScale = _originalGravity;
         playerControl.GripObject = null;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, (Vector2) transform.position + Vector2.down * rayDistance);
+    }
 }
 
 public enum InteractableType

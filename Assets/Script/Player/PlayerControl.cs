@@ -153,9 +153,9 @@ public class PlayerControl : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
 
         if (moveHorizontal < 0)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        else
             transform.rotation = Quaternion.Euler(0, 180, 0);
+        else
+            transform.rotation = Quaternion.Euler(0, 0, 0);
 
         Vector2 movement = new Vector2(moveHorizontal, 0.0f);
 
