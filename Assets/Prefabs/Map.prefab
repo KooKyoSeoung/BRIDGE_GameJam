@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1504088786}
   - component: {fileID: 1504088785}
   - component: {fileID: 1504088787}
-  - component: {fileID: 5997788797478075994}
   m_Layer: 6
   m_Name: PresentTilemap
   m_TagString: Ground
@@ -23470,18 +23469,6 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
---- !u!114 &5997788797478075994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650556992915304115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe4b9d4ee7e11e54c9741f1d259ec959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4650556992954194201
 GameObject:
   m_ObjectHideFlags: 0
@@ -23496,7 +23483,6 @@ GameObject:
   - component: {fileID: 619158721}
   - component: {fileID: 619158720}
   - component: {fileID: 619158722}
-  - component: {fileID: 1193442755157632404}
   m_Layer: 6
   m_Name: PastTilemap
   m_TagString: Ground
@@ -41573,18 +41559,6 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
---- !u!114 &1193442755157632404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650556992954194201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe4b9d4ee7e11e54c9741f1d259ec959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4650556993012308635
 GameObject:
   m_ObjectHideFlags: 0
@@ -41631,8 +41605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7319e793b672149b9d5015789c0140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  propParent: {fileID: 4650556993488957351}
+  currentTime: 0
   tilemap: {fileID: 4650556992954194201}
+  prop: {fileID: 4650556993488957351}
 --- !u!1 &4650556993295668621
 GameObject:
   m_ObjectHideFlags: 0
@@ -41679,8 +41654,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7319e793b672149b9d5015789c0140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  propParent: {fileID: 4650556993655092395}
+  currentTime: 0
   tilemap: {fileID: 4650556992915304115}
+  prop: {fileID: 4650556993655092395}
 --- !u!1 &4650556993488957351
 GameObject:
   m_ObjectHideFlags: 0

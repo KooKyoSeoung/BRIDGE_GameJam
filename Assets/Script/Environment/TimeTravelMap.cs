@@ -28,27 +28,26 @@ public class TimeTravelMap : MonoBehaviour
             propColliders = prop.GetComponentsInChildren<Collider2D>();
         }
     }
-
-    // 지울지말지 고민
-    private void Start()
-    {
-        TimeTravelManager.Instance.ChangeTimeZoneMap();
-    }
-
     #endregion
-
 
     public void ApplyTimeZone()
     {
         if(TimeTravelManager.Instance.CurrentTimeZone== currentTime)
         {
             // Prop
-            int propCnt = propSprites.Length;
-            for(int idx= 0; idx<propCnt; idx++)
+            //Sprite
+            int sprCnt = propSprites.Length;
+            for(int sprIdx= 0; sprIdx < sprCnt; sprIdx++)
             {
-                propSprites[idx].enabled = true;
-                propColliders[idx].isTrigger = false;
+                propSprites[sprIdx].enabled = true;
             }
+            //Collider
+            int collCnt = propColliders.Length;
+            for (int collIdx = 0; collIdx < collCnt; collIdx++)
+            { 
+                propColliders[collIdx].isTrigger = false;
+            }
+
             // TileMap
             tileRenderer.enabled = true;
             tileCollider.isTrigger = false;
@@ -56,13 +55,20 @@ public class TimeTravelMap : MonoBehaviour
         }
         else
         {
-            // Prop
-            int propCnt = propSprites.Length;
-            for (int idx = 0; idx < propCnt; idx++)
+            //Prop
+            //Sprite
+            int sprCnt = propSprites.Length;
+            for (int sprIdx = 0; sprIdx < sprCnt; sprIdx++)
             {
-                propSprites[idx].enabled = false;
-                propColliders[idx].isTrigger = true;
+                propSprites[sprIdx].enabled = true;
             }
+            //Collider
+            int collCnt = propColliders.Length;
+            for (int collIdx = 0; collIdx < collCnt; collIdx++)
+            {
+                propColliders[collIdx].isTrigger = false;
+            }
+
             // TileMap
             tileRenderer.enabled = false;
             tileCollider.usedByComposite = false;

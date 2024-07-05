@@ -5,15 +5,23 @@ using UnityEngine;
 
 public class PlayerTriggerInputController : MonoBehaviour
 {
+    [Space(20), Header("플밍 Part")]
     // Load Position : transform.position = SaveManager.Instance.LoadSavePoint();
     [SerializeField] private float maxInteractDistance = 1f;
     //아웃라인이 하이라이트 되어있는 (하지만 아직 상호작용중이지는 않은) 물체.
     public Interactable currentFocusedInteractable;
     //실제로 상호작용 중인 물체.
     public Interactable currentInteractingObject;
-
     [SerializeField] private Color focusHighlightColor = Color.white;
 
+    // 스페이스바를 계속 누르는 상태를 방지하기 위한 Bool 변수
+    bool isOverlapSpace = false;
+    // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
+    bool isOverlapMap = false;
+    
+    [Space(20), Header("기획 Part")]
+    [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
+    [SerializeField] float pressSpaceTimer = 0f;
 
     void Update()
     {
@@ -44,27 +52,54 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentInteractingObject != null && currentInteractingObject.IsRopeJumped)
             currentInteractingObject = null;
 
-        // �ð� ��ȭ
-        if (Input.GetKeyDown(KeyCode.Space) && !DialogueManager.Instance.IsDialogue)
+        
+        // 스토리 텍스트 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (DialogueManager.Instance.Dialogue_Trigger != null)
+                DialogueManager.Instance.Dialogue_Trigger.Interaction();
+        }
+
+        // 시간 여행 
+        if (!isOverlapSpace && !DialogueManager.Instance.IsDialogue && Input.GetKey(KeyCode.Space))
+        {
+            pressSpaceTimer += Time.deltaTime;
             ChangeTimeZone();
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isOverlapSpace = false;
+            pressSpaceTimer = 0f;
         }
     }
 
     public void ChangeTimeZone()
     {
-        if (DialogueManager.Instance.Dialogue_Trigger != null)
+        // 겹치는 물체가 있으면 경고 메시지 출력 
+        if (isOverlapMap)
         {
-            DialogueManager.Instance.Dialogue_Trigger.Interaction();
+
             return;
         }
-        if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
+
+        // 시간여행 시작
+        if (pressSpaceTimer >= pressSpaceTime)
         {
-            TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Present;
-        }
-        else if(TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
-        {
-            TimeTravelManager.Instance.CurrentTimeZone = TimeZoneType.Past;
+            isOverlapSpace = true;
+            if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
+            {
+                TimeTravelItem currentTravelItem = null;
+                if (currentInteractingObject!=null)
+                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Present, currentTravelItem);
+            }
+            else if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
+            {
+                TimeTravelItem currentTravelItem = null;
+                if (currentInteractingObject != null)
+                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Past, currentTravelItem);
+            }
         }
     }
 
@@ -101,4 +136,18 @@ public class PlayerTriggerInputController : MonoBehaviour
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 1);
         }
     }
+
+    #region Trigger 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ground"))
+            isOverlapMap = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ground"))
+            isOverlapMap = false;
+    }
+    #endregion
 }

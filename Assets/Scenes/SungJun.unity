@@ -1076,6 +1076,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3403887409501331161, guid: 14e797b8b78512f4f8625511c5dc7b4c, type: 3}
   m_PrefabInstance: {fileID: 1266813310}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &924181326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421887089237399592, guid: 450e370fca11cdd45af92a5a9dadba99, type: 3}
+  m_PrefabInstance: {fileID: 1912437768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1036991401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650556993488957351, guid: ca79c14bf658169459b34d530572fde1, type: 3}
@@ -1114,7 +1119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3403887409501331160, guid: 14e797b8b78512f4f8625511c5dc7b4c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3403887409501331161, guid: 14e797b8b78512f4f8625511c5dc7b4c, type: 3}
       propertyPath: m_RootOrder
@@ -1998,6 +2003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 436545970900223102, guid: 681a4ea37ce5a7b44bf898f03500f60e, type: 3}
+      propertyPath: pressSpaceTime
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 436545970900223103, guid: 681a4ea37ce5a7b44bf898f03500f60e, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -2051,6 +2060,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 102721709966089245, guid: 450e370fca11cdd45af92a5a9dadba99, type: 3}
+      propertyPath: onoffUIObject
+      value: 
+      objectReference: {fileID: 924181326}
     - target: {fileID: 6319726187791414790, guid: 450e370fca11cdd45af92a5a9dadba99, type: 3}
       propertyPath: m_Name
       value: RectPositionCanvas

@@ -11,7 +11,14 @@ public class DialogueManager : MonoBehaviour
     Dictionary<int, Dialogue> dialogueDictionary = new Dictionary<int, Dialogue>();
 
     private bool isDialogue = false;
-    public bool IsDialogue { get { return isDialogue; } set { isDialogue = value; /*To Do : Stop Player*/ } }
+    public bool IsDialogue { get { return isDialogue; } set { isDialogue = value; ControlPlayerMove(!isDialogue); } }
+
+    #region Player Information
+    private GameObject player;
+    private PlayerControl playerControl;
+    public GameObject Player { get { return player; } }
+    #endregion
+
     public DialogueUI Dialogue_UI { get; set; } = null;
     public DialogueTrigger Dialogue_Trigger { get; set; } = null;
     public IndicatorTrigger Indicator_Trigger { get; set; } = null;
@@ -61,5 +68,19 @@ public class DialogueManager : MonoBehaviour
             return dialogueDictionary[_ID];
         }
         return null;
+    }
+
+    public void ControlPlayerMove(bool _canMove)
+    {
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+            playerControl = player.GetComponent<PlayerControl>();
+        }
+
+        if (_canMove)
+            playerControl.PlayerSubscribe();
+        else
+            playerControl.PlayerUnSubscribe();
     }
 }
