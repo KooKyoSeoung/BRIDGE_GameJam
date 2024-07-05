@@ -569,6 +569,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 1592312866458579635, guid: 7cc1009af897859419882e1c42ef1ec8, type: 3}
+      propertyPath: savePointData
+      value: 
+      objectReference: {fileID: 11400000, guid: d814ef66b45351d47a5bf3220a6cccb8, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cc1009af897859419882e1c42ef1ec8, type: 3}
 --- !u!1 &452895503
