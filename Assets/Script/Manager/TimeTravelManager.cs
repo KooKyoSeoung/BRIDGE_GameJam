@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeTravelManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class TimeTravelManager : MonoBehaviour
 
     [Header("��ȹ Part")]
     [SerializeField, Tooltip("�����ϴ� Ÿ�Ӷ���")] TimeZoneType currentTimeZone;
-    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value;} }
+    public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } }
 
     [Header("���α׷��� Part")]
     [SerializeField, Tooltip("0:����, 1:����")] TimeTravelMap[] timeTravelMaps;
@@ -45,13 +46,29 @@ public class TimeTravelManager : MonoBehaviour
         // Set TimeZone Once
         if (currentTimeZone == TimeZoneType.None)
             return;
-        ChangeTimeZone(currentTimeZone);
         
         //풍화 바위 찾기
         weatheringRock = FindObjectOfType<WeatheringRock>();
         if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");
+        // Load Save Data
+        LoadTimeData();
     }
     #endregion
+
+    public void LoadTimeData(bool _isReLoad = false)
+    {
+        if (_isReLoad)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }
+        else
+        {
+            TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
+            PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
+            ChangeTimeZone(_curTimeZone);
+        }
+    }
 
     /// <summary>
     /// Use This When you Change TimeZone

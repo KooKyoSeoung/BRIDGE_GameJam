@@ -5,8 +5,8 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
-    List<float> savePointList = new List<float>();
-    Dictionary<float, SavePoint> savePointDic = new Dictionary<float, SavePoint>();
+    [SerializeField] SavePointData savePointData;
+    public SavePointData LoadData { get { return savePointData; } }
 
     private void Awake()
     {
@@ -19,21 +19,12 @@ public class SaveManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    public Vector2 LoadSavePoint()
+    
+    public void SaveData(Vector2 _pos, TimeZoneType _timeZoneType)
     {
-        int savePointCnt = savePointList.Count;
-        if (savePointCnt == 0) // Do not Have Save Point => 0,0 
-            return Vector2.zero;
-        if (savePointDic.ContainsKey(savePointList[savePointCnt - 1]))
-            return savePointDic[savePointList[savePointCnt - 1]].SaveVec;
-        return Vector2.zero;
-    }
-
-    public void AddSavePoint(SavePoint _savePoint)
-    {
-        savePointDic.Add(_savePoint.SaveVec.x,_savePoint);
-        savePointList.Add(_savePoint.SaveVec.x);
-        savePointList.Sort();
+        if(savePointData.savePoint.x > _pos.x)
+            return;
+        savePointData.savePoint = _pos;
+        savePointData.saveTime = _timeZoneType;
     }
 }

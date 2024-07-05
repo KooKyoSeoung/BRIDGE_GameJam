@@ -5,7 +5,7 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     public static UIController Instance;
-
+    
     [SerializeField, Tooltip("인게임/시간여행경고/")] GameObject[] uiObjects;
 
     #region UI
@@ -51,5 +51,9 @@ public class UIController : MonoBehaviour
             InGame_UI.OnOffUI();
         }
         #endregion
+        if (Input.GetKeyDown(KeyCode.R) && !DialogueManager.Instance.IsDialogue)
+        {
+            TimeTravelManager.Instance.LoadTimeData();
+        }
     }
 }

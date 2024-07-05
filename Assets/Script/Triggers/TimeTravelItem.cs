@@ -20,25 +20,38 @@ public class TimeTravelItem : MonoBehaviour
     public TimeZoneType ItemTimeZone { get { return itemTimeZone; } set { itemTimeZone = value; } }
 
     [Header("플밍 Part")]
+    bool haveCollder=false;
     [SerializeField, Tooltip("과거 사진")] Sprite pastTimeZoneSprite;
     [SerializeField, Tooltip("현재 사진")] Sprite presentTimeZoneSprite;
+   
     // Component
     SpriteRenderer spr;
     Collider2D[] itemColliders;
     Rigidbody2D rb;
-    // Value
     RigidbodyType2D defaultType;
-    bool isItemActive = false;
-
-
+    
     #region Unity Life Cycle
     private void Awake()
     {
+        SetInteractableInformation();
         spr = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
-        itemColliders = GetComponentsInChildren<Collider2D>();
-        if (rb != null)
+        if (haveCollder)
+        {
+            itemColliders = GetComponentsInChildren<Collider2D>();
+            rb = GetComponent<Rigidbody2D>();
             defaultType = rb.bodyType;
+        }
+    }
+
+    public void SetInteractableInformation()
+    {
+        Interactable interactable = GetComponent<Interactable>();
+        if (interactable == null)
+            return;
+        if (interactable.interactableType == InteractableType.HeavyMovable)
+            haveCollder = true;
+        else
+            haveCollder = false;
     }
     #endregion
 
@@ -55,7 +68,6 @@ public class TimeTravelItem : MonoBehaviour
             {
                 spr.sprite = presentTimeZoneSprite;
             }
-            isItemActive = true;
             return true;
         }
         return false;
@@ -63,26 +75,36 @@ public class TimeTravelItem : MonoBehaviour
 
     public void ApplyTimeZone(bool _isActive)
     {
-        if (_isActive)
+        if (haveCollder) // Have Collider : Heavy Movable
         {
-            if(rb!=null)
-                rb.bodyType = defaultType;
-            itemColliders[0].enabled = true;
-            spr.enabled = true;
-            isItemActive = true;
+            if (_isActive)
+            {
+                if (rb != null)
+                    rb.bodyType = defaultType;
+                itemColliders[0].enabled = true;
+                spr.enabled = true;
+            }
+            else
+            {
+                if (rb != null)
+                    rb.bodyType = RigidbodyType2D.Static;
+                itemColliders[0].enabled = false;
+                spr.enabled = false;
+            }
         }
-        else
+        else // Else Object
         {
-            if(rb!=null)
-                rb.bodyType = RigidbodyType2D.Static;
-            itemColliders[0].enabled = false;
-            spr.enabled = false;
-            isItemActive = false;
+            if (_isActive)
+                spr.enabled = true;
+            else
+                spr.enabled = false;
         }
     }
 
     public bool CheckCollide()
     {
+        if (!haveCollder)
+            return true;
         ContactFilter2D contact = new ContactFilter2D();
         contact.useTriggers = true;
         contact.SetLayerMask(Physics2D.AllLayers);
@@ -93,7 +115,6 @@ public class TimeTravelItem : MonoBehaviour
         {
             if (collList[idx].CompareTag("Ground"))
             {
-                Debug.Log(collList[idx].name);
                 return false;
             }
         }
