@@ -133,10 +133,16 @@ public class PlayerTriggerInputController : MonoBehaviour
     {
         //만약 상호작용 중인 물체가 이미 있으면 포커스를 찾지 않음.
         if (currentInteractingObject != null) return;
+        
+        var currentTimezone = TimeTravelManager.Instance.CurrentTimeZone;
+        var playerCol = GetComponent<CapsuleCollider2D>();
 
         var allNearInteractables = Physics2D.OverlapCircleAll(transform.position, maxInteractDistance)
             .Where(x => x.GetComponent<Interactable>() != null)
             .Select(x => x.GetComponent<Interactable>()) //Interactable만 남김
+            .Where(x => 
+                x.GetComponent<TimeTravelItem>().ItemTimeZone == currentTimezone || 
+                x.GetComponent<TimeTravelItem>().ItemTimeZone == TimeZoneType.AllTime) //현재 시간대와 같은 시간대의 물체만 남김
             .OrderBy(x => ((Vector2) transform.position -  (Vector2) x.transform.position).magnitude) //플레이어로부터 거리 오름차순으로 정렬
             .ToList();
 

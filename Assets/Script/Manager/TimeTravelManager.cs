@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +20,7 @@ public class TimeTravelManager : MonoBehaviour
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
     public PlayerTriggerInputController PlayerTrigger { get; set; } = null; 
     private WeatheringRock weatheringRock;
+    private TimeTravelItem[] backgroundTimes;
     
     #region Unity Life Cycle
     private void Awake()
@@ -50,6 +52,12 @@ public class TimeTravelManager : MonoBehaviour
         //풍화 바위 찾기
         weatheringRock = FindObjectOfType<WeatheringRock>();
         if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");
+        
+        //백그라운드 찾기
+        backgroundTimes = FindObjectsOfType<ParallaxBackground>().Select(x => x.GetComponent<TimeTravelItem>())
+            .ToArray();
+        if (backgroundTimes.Length < 2) Debug.LogWarning("ParallaxBackground가 두개 미만입니다. 메인 씬이 아니라면 무시해도 무방합니다.");
+        
         // Load Save Data
         TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
         PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
@@ -75,6 +83,14 @@ public class TimeTravelManager : MonoBehaviour
         if (weatheringRock != null)
         {
             weatheringRock.OnChangeTimeZone(_changeType);
+        }
+
+        if (backgroundTimes.Length == 2)
+        {
+            foreach (var backgroundTime in backgroundTimes)
+            {
+                backgroundTime.gameObject.SetActive(currentTimeZone == backgroundTime.ItemTimeZone);
+            }
         }
     }
 

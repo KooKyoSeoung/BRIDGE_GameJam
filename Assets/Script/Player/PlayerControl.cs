@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -322,10 +323,13 @@ public class PlayerControl : MonoBehaviour
 
     private void GroundedCheck()
     {
-        var ground = Physics2D.OverlapBox((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("Ground"));
-        var heavyItem = Physics2D.OverlapBox((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("HeavyItem"));
+        var grounded = Physics2D.OverlapBoxAll((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("Ground"))
+            .Any(x=>x.isTrigger == false);
+        var onHeavyItem = Physics2D.OverlapBoxAll((Vector2) transform.position + groundCheckOffset, groundCheckSize, 0f, LayerMask.GetMask("HeavyItem"))
+            .Any(x=>x.isTrigger == false);
 
-        if (ground != null || heavyItem != null)
+        
+        if (grounded || onHeavyItem)
         {
             isGround = true;
         }

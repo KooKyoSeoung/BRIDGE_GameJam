@@ -2902,7 +2902,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -2923,7 +2923,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -2944,7 +2944,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -2965,7 +2965,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -2986,7 +2986,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -3007,7 +3007,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -3028,7 +3028,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 288
-        y: 349
+        y: 333
         width: 32
         height: 32
       alignment: 0
@@ -3334,48 +3334,6 @@ TextureImporter:
       bones: []
       spriteID: 331e9790b8ae85d409d37f5e8b553d13
       internalID: -1562484748
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 0704gamejammap_176
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 317
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 39c342abbdeee614c8851aa04c6da74f
-      internalID: 280777524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 0704gamejammap_177
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 317
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed86e329324b62846b3d3b15b6a8ecb6
-      internalID: 156168384
       vertices: []
       indices: 
       edges: []
