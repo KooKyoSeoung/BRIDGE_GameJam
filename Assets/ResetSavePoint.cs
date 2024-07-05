@@ -11,7 +11,7 @@ public class ResetSavePoint : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F12))
         {
-            SaveManager.Instance.SaveData(startingPosition, startingTimeZone, true);
+            SaveManager.Instance.SaveData(startingPosition, startingTimeZone, false, true);
         }
     }
 }

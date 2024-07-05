@@ -164,7 +164,8 @@ MonoBehaviour:
   climbSpeed: 5
   groundCheckOffset: {x: 0, y: -0.85}
   groundCheckSize: {x: 0.22, y: 0.15}
-  coyoteTime: 0.15
+  coyoteTime: 0.1
+  isGround: 1
   slopeCheckPosition: {fileID: 436545970859710936}
   groundMask:
     serializedVersion: 2

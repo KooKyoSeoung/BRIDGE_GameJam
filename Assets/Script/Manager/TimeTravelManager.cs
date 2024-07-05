@@ -66,6 +66,7 @@ public class TimeTravelManager : MonoBehaviour
         // Load Save Data
         TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
         PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
+        PlayerTrigger.hasObtainedWatch = SaveManager.Instance.LoadData.hasObtainedWatch;
         ChangeTimeZone(_curTimeZone);
     }
     #endregion

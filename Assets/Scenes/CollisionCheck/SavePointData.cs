@@ -7,10 +7,12 @@ public class SavePointData : ScriptableObject
 {
     public Vector2 savePoint;
     public TimeZoneType saveTime;
+    public bool hasObtainedWatch;
 
     public void Init()
     {
         savePoint = Vector2.zero;
         saveTime = TimeZoneType.Present;
+        hasObtainedWatch = false;
     }
 }

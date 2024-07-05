@@ -8,7 +8,7 @@ public class SavePointTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SaveManager.Instance.SaveData(transform.position, TimeTravelManager.Instance.CurrentTimeZone);
+            SaveManager.Instance.SaveData(transform.position, TimeTravelManager.Instance.CurrentTimeZone, collision.GetComponent<PlayerTriggerInputController>().hasObtainedWatch);
             gameObject.SetActive(false);
         }
     }

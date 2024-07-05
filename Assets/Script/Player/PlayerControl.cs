@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float coyoteTime = .15f;
     private float moveHorizontal = 0.0f;
     private float originGravity;
-    private bool isGround = true;
+    public bool isGround = true;
     private bool isWalkingSoundPlaying = false;
     private bool isLandingSoundPlaying = false;
     private float coyoteCounter;

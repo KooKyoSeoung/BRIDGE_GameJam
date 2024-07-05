@@ -39,9 +39,11 @@ public class PlayerTriggerInputController : MonoBehaviour
         // 상호작용중인 물체가 없고 하이라이트된 물체가 있는 상태에서 F키
         if (Input.GetKeyDown(KeyCode.F) && canUseInteractionKey)
         {
-            if (currentFocusedInteractable != null && currentInteractingObject == null) 
+            if (currentFocusedInteractable != null && currentInteractingObject == null)
             {
-                if (currentFocusedInteractable.interactableType != InteractableType.QuickInteraction) //QuickInteraction 타입은 단발적인 interaction이므로 상호작용'중'인 오브젝트로 추가하지 않는다.
+                if (currentFocusedInteractable.interactableType !=
+                    InteractableType
+                        .QuickInteraction) //QuickInteraction 타입은 단발적인 interaction이므로 상호작용'중'인 오브젝트로 추가하지 않는다.
                 {
                     currentInteractingObject = currentFocusedInteractable;
                     SetFocusInteractable(null);
@@ -67,8 +69,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentInteractingObject != null && currentInteractingObject.IsRopeJumped)
             currentInteractingObject = null;
 
-        
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // 스토리 텍스트 
@@ -77,6 +78,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                 //DialogueManager.Instance.Dialogue_Trigger.Interaction();
                 return;
             }
+
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
             if (isOverlapMap && hasObtainedWatch == true)
             {
@@ -86,14 +88,45 @@ public class PlayerTriggerInputController : MonoBehaviour
                     sfxPlayer.PlayAudioClip(1);
                 }
             }
+            else if (hasObtainedWatch && GetComponent<PlayerControl>().isGround == false)
+            {
+                if (currentInteractingObject == null ||
+                    currentInteractingObject.interactableType != InteractableType.Rope)
+                {
+                    if (!DialogueManager.Instance.IsDialogue)
+                    {
+                        UIController.Instance.TimeTravelWarn_UI.Warning();
+                        sfxPlayer.PlayAudioClip(1);
+                    }
+                }
+            }
         }
+        
+        print(isOverlapSpace);
 
         // 시간 여행 
         if (!isOverlapSpace && Input.GetKey(KeyCode.Space) && hasObtainedWatch)
         {
-            pressSpaceTimer += Time.deltaTime;
-            ChangeTimeZone();
+            var canChangeTimeZoneAirbourne = true;
+
+            if (GetComponent<PlayerControl>().isGround == false)
+            {
+                if (currentInteractingObject == null || currentInteractingObject.interactableType != InteractableType.Rope)
+                {
+                    canChangeTimeZoneAirbourne = false;
+                }
+            }
+            
+            print(canChangeTimeZoneAirbourne);
+
+            if (canChangeTimeZoneAirbourne)
+            {
+                print("1");
+                pressSpaceTimer += Time.deltaTime;
+                ChangeTimeZone();
+            }
         }
+        
         if (Input.GetKeyUp(KeyCode.Space) && hasObtainedWatch)
         {
             isOverlapSpace = false;
