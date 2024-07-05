@@ -66,7 +66,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                 return;
             }
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
-            if (isOverlapMap /*|| isOverlapSpace*/ /*|| !TimeTravelManager.Instance.CheckTimeTravelCollide()*/)
+            if (isOverlapMap)
             {
                 if (!DialogueManager.Instance.IsDialogue)
                     UIController.Instance.TimeTravelWarn_UI.Warning();
@@ -90,8 +90,8 @@ public class PlayerTriggerInputController : MonoBehaviour
     {
         if(isOverlapMap)
         {
-            Warning();
             isOverlapSpace = true;
+            UIController.Instance.TimeTravelWarn_UI.Warning();
             return;
         }
         else
@@ -103,7 +103,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                 if (!currentTravelItem.CheckCollide())
                 {
                     isOverlapSpace = true;
-                    Warning();
+                    UIController.Instance.TimeTravelWarn_UI.Warning();
                     return;
                 }
             }
@@ -216,15 +216,6 @@ public class PlayerTriggerInputController : MonoBehaviour
     {
         if (collision.CompareTag("Ground"))
             isOverlapMap = false;
-    }
-
-    public void Warning()
-    {
-        if (isOverlapMap)
-        {
-            if (!DialogueManager.Instance.IsDialogue)
-                UIController.Instance.TimeTravelWarn_UI.Warning();
-        }
     }
     #endregion
 }

@@ -51,23 +51,16 @@ public class TimeTravelManager : MonoBehaviour
         weatheringRock = FindObjectOfType<WeatheringRock>();
         if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");
         // Load Save Data
-        LoadTimeData();
+        TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
+        PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
+        ChangeTimeZone(_curTimeZone);
     }
     #endregion
 
-    public void LoadTimeData(bool _isReLoad = false)
+    public void LoadTimeData()
     {
-        if (_isReLoad)
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
-        else
-        {
-            TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
-            PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
-            ChangeTimeZone(_curTimeZone);
-        }
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
     /// <summary>
