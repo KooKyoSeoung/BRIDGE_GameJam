@@ -16,7 +16,7 @@ public class TimeTravelManager : MonoBehaviour
     [SerializeField] GameObject interactionParent;
 
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
-    
+    public PlayerTriggerInputController PlayerTrigger { get; set; } = null; 
     #region Unity Life Cycle
     private void Awake()
     {
@@ -33,6 +33,9 @@ public class TimeTravelManager : MonoBehaviour
         {
             timeTravelItemList.Add(travelItems[idx]);
         }
+        // Link Player
+        GameObject player = GameObject.FindWithTag("Player");
+        PlayerTrigger = player.GetComponent<PlayerTriggerInputController>();
     }
 
     private void Start()
@@ -58,31 +61,36 @@ public class TimeTravelManager : MonoBehaviour
     public void ChangeTimeZoneItem(TimeTravelItem _excludeTimeTravelItem = null)
     {
         int timeTravelItemCnt = timeTravelItemList.Count;
-        if (_excludeTimeTravelItem == null) {
+        
+        if (_excludeTimeTravelItem == null)  // 가져올 물품이 없는 경우
+        {
             for (int idx = 0; idx < timeTravelItemCnt; idx++)
             {
-                if (!timeTravelItemList[idx].ApplyTimeZone(currentTimeZone))
+                if (!timeTravelItemList[idx].ApplyAllTimeZone(currentTimeZone))
                 {
                     if (timeTravelItemList[idx].ItemTimeZone == currentTimeZone)
-                        timeTravelItemList[idx].gameObject.SetActive(true);
+                        timeTravelItemList[idx].ApplyTimeZone(true);
                     else
-                        timeTravelItemList[idx].gameObject.SetActive(false);
+                        timeTravelItemList[idx].ApplyTimeZone(false);
                 }
             }
         }
-        else
+        else // 가져올 물품이 있는 경우
         {
             for (int idx = 0; idx < timeTravelItemCnt; idx++)
             {
                 TimeTravelItem _travelItem = timeTravelItemList[idx];
                 if (_travelItem == _excludeTimeTravelItem)
+                {
+                    _travelItem.ItemTimeZone = currentTimeZone;
                     continue;
-                if (!timeTravelItemList[idx].ApplyTimeZone(currentTimeZone))
+                }
+                if (!timeTravelItemList[idx].ApplyAllTimeZone(currentTimeZone))
                 {
                     if (timeTravelItemList[idx].ItemTimeZone == currentTimeZone)
-                        timeTravelItemList[idx].gameObject.SetActive(true);
+                        timeTravelItemList[idx].ApplyTimeZone(true);
                     else
-                        timeTravelItemList[idx].gameObject.SetActive(false);
+                        timeTravelItemList[idx].ApplyTimeZone(false);
                 }
             }
         }
@@ -92,13 +100,27 @@ public class TimeTravelManager : MonoBehaviour
     {
         if (currentTimeZone == TimeZoneType.Past)
         {
-            timeTravelMaps[0].ApplyTimeZone();
-            timeTravelMaps[1].ApplyTimeZone();
+            timeTravelMaps[0].ApplyAllTimeZone();
+            timeTravelMaps[1].ApplyAllTimeZone();
         }
         else if (currentTimeZone == TimeZoneType.Present)
         {
-            timeTravelMaps[1].ApplyTimeZone();
-            timeTravelMaps[0].ApplyTimeZone();
+            timeTravelMaps[1].ApplyAllTimeZone();
+            timeTravelMaps[0].ApplyAllTimeZone();
+        }
+    }
+
+    public void RemoveTravelItem(TimeTravelItem _timeTravelItem)
+    {
+        int itemCnt = timeTravelItemList.Count;
+        for(int idx = 0; idx<itemCnt; idx++)
+        {
+            if(_timeTravelItem == timeTravelItemList[idx])
+            {
+                Destroy(timeTravelItemList[idx].gameObject);
+                timeTravelItemList.RemoveAt(idx);
+                return;
+            }
         }
     }
     #endregion

@@ -30,7 +30,7 @@ public class TimeTravelMap : MonoBehaviour
     }
     #endregion
 
-    public void ApplyTimeZone()
+    public void ApplyAllTimeZone()
     {
         if(TimeTravelManager.Instance.CurrentTimeZone== currentTime)
         {
@@ -60,13 +60,13 @@ public class TimeTravelMap : MonoBehaviour
             int sprCnt = propSprites.Length;
             for (int sprIdx = 0; sprIdx < sprCnt; sprIdx++)
             {
-                propSprites[sprIdx].enabled = true;
+                propSprites[sprIdx].enabled = false;
             }
             //Collider
             int collCnt = propColliders.Length;
             for (int collIdx = 0; collIdx < collCnt; collIdx++)
             {
-                propColliders[collIdx].isTrigger = false;
+                propColliders[collIdx].isTrigger = true;
             }
 
             // TileMap
