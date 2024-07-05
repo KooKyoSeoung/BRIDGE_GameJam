@@ -6,22 +6,26 @@ public class IndicatorTrigger : MonoBehaviour
 {
     [SerializeField] float upValue;
     [SerializeField] GameObject indicatorTriggerObject;
-    private void Start()
+
+    private Transform _targetTransform;
+    private bool _isActive = false;
+
+    public void OnOffIndicator(bool _isActive, Transform _target)
     {
-        DialogueManager.Instance.Indicator_Trigger = this;
+        this._isActive = _isActive;
+        _targetTransform = _target;
+        if (_isActive && _target != null)
+        {
+            indicatorTriggerObject.transform.position = (Vector2)_targetTransform.position + Vector2.up * upValue;
+        }
+        indicatorTriggerObject.gameObject.SetActive(_isActive);
     }
 
-    public void OnOffIndicator(bool _isActive, Vector2 _pos)
+    private void Update()
     {
         if (_isActive)
         {
-            indicatorTriggerObject.transform.position = _pos;
-            indicatorTriggerObject.transform.position += Vector3.up * upValue;
-            indicatorTriggerObject.gameObject.SetActive(true);
-        }
-        else
-        {
-            indicatorTriggerObject.gameObject.SetActive(false);
+            indicatorTriggerObject.transform.position = (Vector2)_targetTransform.position + Vector2.up * upValue;
         }
     }
 }

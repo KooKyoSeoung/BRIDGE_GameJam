@@ -193,7 +193,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -857102212, guid: a5102dc6a5636614f9b6316b143107a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   itemTimeZone: 0
   pastTimeZoneSprite: {fileID: 0}
   presentTimeZoneSprite: {fileID: 0}
-  canInteraction: 0
+  canInteraction: 1
 --- !u!1 &7910998755986921203
 GameObject:
   m_ObjectHideFlags: 0

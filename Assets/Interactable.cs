@@ -148,6 +148,12 @@ public class Interactable : MonoBehaviour
         playerControl.GripObject = null;
         playerControl.RopeBottomPos = 0.0f;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, (Vector2) transform.position + Vector2.down * rayDistance);
+    }
 }
 
 public enum InteractableType
