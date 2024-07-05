@@ -216,6 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 0}
   parallaxSpeed: 0.1
+  verticalSpeed: 0.5
 --- !u!114 &2292268702175824641
 MonoBehaviour:
   m_ObjectHideFlags: 0
