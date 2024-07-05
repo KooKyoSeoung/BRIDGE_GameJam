@@ -23,8 +23,8 @@ public class CameraManager : MonoBehaviour
     #region TargetCamera
     float targetZoomSize;
     CinemachineVirtualCamera playerCam;
-    public CinemachineVirtualCamera TargetCam { get; set; } = null;
-    public CinemachineVirtualCamera CurrentCam { get; set; } = null;
+    public CinemachineVirtualCamera TargetCam;
+    public CinemachineVirtualCamera CurrentCam;
     #endregion
 
     #region Unity Life Cycle
@@ -64,6 +64,11 @@ public class CameraManager : MonoBehaviour
         if (TargetCam == null)
             yield break;
         brain.m_DefaultBlend.m_Time = blendSpeed;
+        if(CurrentCam==null)
+        {
+            CurrentCam = brain.ActiveVirtualCamera as CinemachineVirtualCamera;
+            playerCam = CurrentCam;
+        }
         TargetCam.Priority = CurrentCam.Priority + 1;
         CurrentCam = TargetCam;
         yield return new WaitForSeconds(blendSpeed + returnTime);

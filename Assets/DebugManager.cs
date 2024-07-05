@@ -10,8 +10,8 @@ public class DebugManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            //string currentSceneName = SceneManager.GetActiveScene().name;
+            //SceneManager.LoadScene(currentSceneName);
         }
     }
 #endif

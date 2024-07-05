@@ -9,9 +9,9 @@ public class CameraTrigger : MonoBehaviour
 
     bool isOnce = true;
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isOnce && Input.GetKeyDown(KeyCode.Alpha1))
+        if (collision.CompareTag("Player") && isOnce)
         {
             isOnce = false;
             CameraManager.Instance.BlendCamera(virtualCam);

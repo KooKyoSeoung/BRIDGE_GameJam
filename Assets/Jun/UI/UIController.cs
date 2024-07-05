@@ -6,11 +6,12 @@ public class UIController : MonoBehaviour
 {
     public static UIController Instance;
     
-    [SerializeField, Tooltip("인게임/시간여행경고/")] GameObject[] uiObjects;
+    [SerializeField, Tooltip("인게임/시간여행경고/페이드")] GameObject[] uiObjects;
 
     #region UI
-    public InGameUI InGame_UI { get; set; } = null;
-    public TimeTravelWarnUI TimeTravelWarn_UI { get; set; } = null;
+    public InGameUI InGame_UI;
+    public TimeTravelWarnUI TimeTravelWarn_UI;
+    public FadeUI Fade_UI;
     //public DialogueUI Dialogue_UI { get; set; } = null;
     //public TitleUI Title_UI { get; set; } = null;
 
@@ -21,10 +22,10 @@ public class UIController : MonoBehaviour
     {
         InGameUI =0,
         TimeTravelWarnUI=1,
-
+        FadeUI=2,
     }
 
-    void Start()
+    void Awake()
     {
         // Singleton
         if (Instance == null)
@@ -37,6 +38,8 @@ public class UIController : MonoBehaviour
             InGame_UI = uiObjects[(int)UIType.InGameUI].GetComponent<InGameUI>();
         if(TimeTravelWarn_UI==null)
             TimeTravelWarn_UI = uiObjects[(int)UIType.TimeTravelWarnUI].GetComponent<TimeTravelWarnUI>();
+        if (Fade_UI == null)
+            Fade_UI = uiObjects[(int)UIType.FadeUI].GetComponent<FadeUI>();
         //if (Dialogue_UI == null)
         //    Dialogue_UI = GetComponentInChildren<DialogueUI>();
     }
@@ -55,8 +58,18 @@ public class UIController : MonoBehaviour
         #region Reset Scene
         if (Input.GetKeyDown(KeyCode.R) && !DialogueManager.Instance.IsDialogue)
         {
-            TimeTravelManager.Instance.LoadTimeData();
+            Fade_UI.InputResetBtn();
         }
         #endregion
+    }
+
+    public void GameOver()
+    {
+        Fade_UI.InputResetBtn();
+    }
+
+    public void ResetGame()
+    {
+        TimeTravelManager.Instance.LoadTimeData();
     }
 }

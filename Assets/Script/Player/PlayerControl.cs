@@ -260,7 +260,7 @@ public class PlayerControl : MonoBehaviour
 
         if (moveHorizontal < 0)
             transform.localScale = new Vector3(-1, 1, 1);
-        else
+        else if (moveHorizontal > 0)
             transform.localScale = new Vector3(1, 1, 1);
 
         Vector2 movement = new Vector2(moveHorizontal, 0.0f);

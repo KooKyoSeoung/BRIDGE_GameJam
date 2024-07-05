@@ -46,7 +46,7 @@ public class TimeTravelManager : MonoBehaviour
         // Set TimeZone Once
         if (currentTimeZone == TimeZoneType.None)
             return;
-        
+        UIController.Instance.Fade_UI.FadeIn();
         //풍화 바위 찾기
         weatheringRock = FindObjectOfType<WeatheringRock>();
         if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");

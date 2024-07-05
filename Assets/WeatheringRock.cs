@@ -22,7 +22,7 @@ public class WeatheringRock : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Coroutine pushColliiderRoutine;
     
-    private void Start()
+    private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
