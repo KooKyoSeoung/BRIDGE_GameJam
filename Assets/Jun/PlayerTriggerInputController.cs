@@ -14,7 +14,8 @@ public class PlayerTriggerInputController : MonoBehaviour
     public Interactable currentInteractingObject;
     [SerializeField] private Color focusHighlightColor = Color.white;
 
-    [SerializeField] BoxCollider2D timeCheckColl;
+    // 플레이어에 붙어있는 콜리더 : 바닥을 감지하는 것을 방지하기 위해 작은 콜리더를 하나 더 추가한 것
+    [SerializeField] BoxCollider2D timeCheckColl; 
     // 스페이스바를 계속 누르는 상태를 방지하기 위한 Bool 변수
     bool isOverlapSpace = false;
     // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
@@ -22,7 +23,7 @@ public class PlayerTriggerInputController : MonoBehaviour
     
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
-    [SerializeField] float pressSpaceTimer = 0f;
+    float pressSpaceTimer = 0f;
 
     void Update()
     {
@@ -154,9 +155,37 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (collision.CompareTag("Ground"))
         {
             if (timeCheckColl.IsTouching(collision))
+            {
+                // 맵과 플레이어가 겹치는 경우
                 isOverlapMap = true;
+            }
             else
-                isOverlapMap = false;
+            {
+                if (currentInteractingObject == null)
+                {
+                    // 상호작용하는 물체가 없는 경우
+                    isOverlapMap = false;
+                }
+                else
+                {
+                    // 상호작용하는 물체도 겹치는지 확인
+                    BoxCollider2D[] boxColls = currentInteractingObject.GetComponentsInChildren<BoxCollider2D>();
+                    int boxCnt = boxColls.Length;
+                    if (boxCnt == 0) 
+                    {
+                        // 예외처리
+                        return;
+                    }
+                    else 
+                    {
+                        // 상호작용 물체와 맵의 충돌 체크
+                        if (boxColls[boxCnt - 1].IsTouching(collision))
+                            isOverlapMap = true;
+                        else
+                            isOverlapMap = false;
+                    }
+                }
+            }
         }
     }
 
