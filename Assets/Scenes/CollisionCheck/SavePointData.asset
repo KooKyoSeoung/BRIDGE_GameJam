@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f5343ac043f75142a96f8723906ed0d, type: 3}
   m_Name: SavePointData
   m_EditorClassIdentifier: 
-  savePoint: {x: 114.5, y: -8.4}
+  savePoint: {x: 203.4, y: 1.6}
   saveTime: 0
