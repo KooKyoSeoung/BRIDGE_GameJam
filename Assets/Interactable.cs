@@ -86,6 +86,7 @@ public class Interactable : MonoBehaviour
                     IsHeavyItemDrop = false;
                     _rb2d.bodyType = RigidbodyType2D.Dynamic;
                     playerControl.HeldObject = this.gameObject;
+                    playerControl.PlayerAnimationEnd();
                     if (playerControl.IsSubscribing)
                         playerControl.PlayerUnSubscribe();
                 }
@@ -99,6 +100,9 @@ public class Interactable : MonoBehaviour
                 playerControl.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
                 playerControl.GripObject = this.gameObject;
                 playerControl.RopePos = new Vector2(transform.position.x, transform.GetChild(0).position.y);
+                playerControl.PlayerAnimationEnd();
+                if (transform.childCount > 1)
+                    playerControl.RopeBottomPos = transform.GetChild(1).position.y;
                 break;
             default:
                 break;
@@ -130,6 +134,7 @@ public class Interactable : MonoBehaviour
     public void HeavyInteractionEnd()
     {
         //_rb2d.bodyType = RigidbodyType2D.Static;
+        playerControl.HeldAnimationEnd();
         playerControl.HeldObject = null;
         if (!playerControl.IsSubscribing)
             playerControl.PlayerSubscribe();
@@ -137,9 +142,11 @@ public class Interactable : MonoBehaviour
 
     public void RopeInteractionEnd()
     {
+        playerControl.RopeAnimationEnd();
         playerControl.IsClimbing = false;
         playerControl.GetComponent<Rigidbody2D>().gravityScale = _originalGravity;
         playerControl.GripObject = null;
+        playerControl.RopeBottomPos = 0.0f;
     }
 
     private void OnDrawGizmosSelected()
