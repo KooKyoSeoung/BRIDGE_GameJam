@@ -80,6 +80,11 @@ public class TimeTravelManager : MonoBehaviour
         ChangeTimeZoneItem(_excludeTimeTravelItem);
         ChangeTimeZoneMap();
 
+        if (currentTimeZone == TimeZoneType.Past)
+            Managers.Sound.PlayBGM("Forest");
+        else
+            Managers.Sound.PlayBGM("City");
+
         if (weatheringRock != null)
         {
             weatheringRock.OnChangeTimeZone(_changeType);
