@@ -8,7 +8,7 @@ public class TitleSceneManager : MonoBehaviour
 {
     void Start()
     {
-        Managers.Sound.PlayBGM("TitleBgm");
+        Managers.Sound.PlayBGM("TitleBgm2");
     }
 
     void Update()

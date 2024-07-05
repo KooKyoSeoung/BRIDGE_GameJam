@@ -21,6 +21,8 @@ public class PlayerControl : MonoBehaviour
     private float moveHorizontal = 0.0f;
     private float originGravity;
     private bool isGround = true;
+    private bool isWalkingSoundPlaying = false;
+    private bool isLandingSoundPlaying = false;
     private float coyoteCounter;
 
     private Rigidbody2D playerRigidbody;
@@ -74,6 +76,14 @@ public class PlayerControl : MonoBehaviour
         {
             InputManager.isNeedInit = false;
             //moveHorizontal = 0.0f;
+        }
+
+        if (isGround && playerAnimator.GetBool("isRun"))
+        {
+            if (!isWalkingSoundPlaying)
+            {
+                StartCoroutine("PlayWalkSound");
+            }
         }
 
         /*
@@ -136,6 +146,7 @@ public class PlayerControl : MonoBehaviour
         {
             playerAnimator.SetBool("isPush", true);
             Vector2 force = new Vector2(1, 0) * (Input.GetAxis("Horizontal") * pushPullForce);
+            moveHorizontal = force.x;
             if (force == Vector2.zero)
                 playerAnimator.speed = 0.0f;
             else
@@ -158,8 +169,9 @@ public class PlayerControl : MonoBehaviour
                 }
             }
             Vector2 velocityYOnly = new Vector2(0.0f, HeldObject.GetComponent<Rigidbody2D>().velocity.y);
+            Vector2 playerVelocityYOnly = new Vector2(0.0f, playerRigidbody.velocity.y);
             HeldObject.GetComponent<Rigidbody2D>().velocity = force + velocityYOnly;
-            playerRigidbody.velocity = force;
+            playerRigidbody.velocity = force + velocityYOnly;
         }
 
         if (moveHorizontal == 0.0f)
@@ -246,11 +258,21 @@ public class PlayerControl : MonoBehaviour
         playerAnimator.SetBool("isPull", false);
     }
 
+    private IEnumerator PlayWalkSound()
+    {
+        int v = Random.Range(1, 6);
+        isWalkingSoundPlaying = true;
+        Managers.Sound.PlaySFX("FootStep0" + v.ToString());
+        yield return new WaitForSeconds(0.6f);
+        isWalkingSoundPlaying = false;
+    }
+
     private void OnPlayerJump()
     {
         if (Input.GetKeyDown(jumpKey) && coyoteCounter > 0 && !IsClimbing)
         {
             playerRigidbody.velocity = Vector2.zero;
+            Managers.Sound.PlaySFX("Jump");
             playerRigidbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
         }
     }
@@ -299,6 +321,12 @@ public class PlayerControl : MonoBehaviour
                 //playerCollider.isTrigger = false;
             }
 
+            if (!isLandingSoundPlaying)
+            {
+                isLandingSoundPlaying = true;
+                Managers.Sound.PlaySFX("Land");
+            }
+
             slopePerp = Vector2.Perpendicular(groundRay.normal).normalized;
             slopeAngle = Vector2.Angle(groundRay.normal, Vector2.up);
 
@@ -309,6 +337,8 @@ public class PlayerControl : MonoBehaviour
 
             Debug.DrawLine(groundRay.point, groundRay.point + groundRay.normal, Color.red);
         }
+        else
+            isLandingSoundPlaying = false;
         /*else
             isGround = false;*/
     }
@@ -343,6 +373,14 @@ public class PlayerControl : MonoBehaviour
     {
         if (isGround) coyoteCounter = coyoteTime;
         else coyoteCounter -= Time.deltaTime;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            //Managers.Sound.PlaySFX("Land");
+        }
     }
 
     /*
