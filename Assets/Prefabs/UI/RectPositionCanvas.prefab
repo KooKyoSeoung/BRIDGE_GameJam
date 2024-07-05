@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1157,7 +1157,10 @@ MonoBehaviour:
   uiObjects:
   - {fileID: 4920857611258207760}
   - {fileID: 5630844142585213614}
-  - {fileID: 2049486277163813202}
+  - {fileID: 8714771303775592252}
+  InGame_UI: {fileID: 3799099720949475208}
+  TimeTravelWarn_UI: {fileID: 5993301184144443237}
+  Fade_UI: {fileID: 4728997581745309449}
   indicatorTrigger: {fileID: 0}
 --- !u!1 &6319726187830019438
 GameObject:
@@ -1918,6 +1921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d3965dbd36d2a40a4694cc880c4d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeTime: 2
+  fadeTime: 1
   fadeWaitTime: 0
   fadeImage: {fileID: 612936498003294757}
