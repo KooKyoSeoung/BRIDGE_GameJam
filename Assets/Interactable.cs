@@ -95,6 +95,7 @@ public class Interactable : MonoBehaviour
                 }
                 break;
             case InteractableType.QuickInteraction:
+                if (tag == "MagicWatch") FindObjectOfType<PlayerTriggerInputController>().hasObtainedWatch = true;
                 GetComponent<DialogueTrigger>().Interaction();
                 break;
             case InteractableType.Rope:

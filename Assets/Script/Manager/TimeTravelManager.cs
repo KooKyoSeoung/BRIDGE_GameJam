@@ -21,7 +21,8 @@ public class TimeTravelManager : MonoBehaviour
     public PlayerTriggerInputController PlayerTrigger { get; set; } = null; 
     private WeatheringRock weatheringRock;
     private TimeTravelItem[] backgroundTimes;
-    
+    private Waterfall waterFall;
+
     #region Unity Life Cycle
     private void Awake()
     {
@@ -53,6 +54,10 @@ public class TimeTravelManager : MonoBehaviour
         weatheringRock = FindObjectOfType<WeatheringRock>();
         if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");
         
+        //폭포 찾기
+        waterFall = FindObjectOfType<Waterfall>();
+        if (waterFall == null) Debug.LogWarning("waterFall is Null. 메인 레벨이 있는 씬이 아니라면 무시해도 무방합니다.");
+        
         //백그라운드 찾기
         backgroundTimes = FindObjectsOfType<ParallaxBackground>().Select(x => x.GetComponent<TimeTravelItem>())
             .ToArray();
@@ -83,6 +88,12 @@ public class TimeTravelManager : MonoBehaviour
         if (weatheringRock != null)
         {
             weatheringRock.OnChangeTimeZone(_changeType);
+        }
+        
+        if (waterFall != null)
+        {
+            if (_changeType == TimeZoneType.Past) waterFall.gameObject.SetActive(true);
+            else if (_changeType == TimeZoneType.Present) waterFall.gameObject.SetActive(false);
         }
 
         if (backgroundTimes.Length == 2)

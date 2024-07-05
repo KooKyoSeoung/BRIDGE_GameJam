@@ -10,6 +10,7 @@ TagManager:
   - Coke
   - ObjectTimeCheck
   - SpecialTree
+  - MagicWatch
   layers:
   - Default
   - TransparentFX

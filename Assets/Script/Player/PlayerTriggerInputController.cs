@@ -26,6 +26,7 @@ public class PlayerTriggerInputController : MonoBehaviour
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
     float pressSpaceTimer = 0f;
     public bool canUseInteractionKey = true;
+    public bool hasObtainedWatch = false;
 
     void Update()
     {
@@ -73,7 +74,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                 return;
             }
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
-            if (isOverlapMap)
+            if (isOverlapMap && hasObtainedWatch == true)
             {
                 if (!DialogueManager.Instance.IsDialogue)
                     UIController.Instance.TimeTravelWarn_UI.Warning();
@@ -81,12 +82,12 @@ public class PlayerTriggerInputController : MonoBehaviour
         }
 
         // 시간 여행 
-        if (!isOverlapSpace && !DialogueManager.Instance.IsDialogue && Input.GetKey(KeyCode.Space))
+        if (!isOverlapSpace && Input.GetKey(KeyCode.Space) && hasObtainedWatch)
         {
             pressSpaceTimer += Time.deltaTime;
             ChangeTimeZone();
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) && hasObtainedWatch)
         {
             isOverlapSpace = false;
             pressSpaceTimer = 0f;

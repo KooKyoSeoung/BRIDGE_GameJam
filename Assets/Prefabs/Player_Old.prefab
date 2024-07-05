@@ -111,7 +111,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: -1200499850, guid: 857f704e64ba4214498008718b1ceeb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -185,6 +185,7 @@ MonoBehaviour:
   focusHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   timeCheckColl: {fileID: 3664434342851326618}
   pressSpaceTime: 0
+  canUseInteractionKey: 1
 --- !u!70 &436545970900223101
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
