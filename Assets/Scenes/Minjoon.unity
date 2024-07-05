@@ -1588,10 +1588,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SavePoints
       objectReference: {fileID: 0}
-    - target: {fileID: 8296381679136568213, guid: 0fab45f221fed124393564b5264c7903, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8296381679136568214, guid: 0fab45f221fed124393564b5264c7903, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1784,6 +1780,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 518089053020114738, guid: ba6934a5eba44504a8bc932579ef43e3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 518089053020114738, guid: ba6934a5eba44504a8bc932579ef43e3, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1306114783927107922, guid: ba6934a5eba44504a8bc932579ef43e3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1306114783927107922, guid: ba6934a5eba44504a8bc932579ef43e3, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4804932745792194622, guid: ba6934a5eba44504a8bc932579ef43e3, type: 3}
       propertyPath: m_Name
       value: AllCanvas
