@@ -20,8 +20,14 @@ public class SaveManager : MonoBehaviour
         }
     }
     
-    public void SaveData(Vector2 _pos, TimeZoneType _timeZoneType)
+    public void SaveData(Vector2 _pos, TimeZoneType _timeZoneType, bool _forceSave = false)
     {
+        if (_forceSave)
+        {
+            savePointData.savePoint = _pos;
+            savePointData.saveTime = _timeZoneType;
+            return;
+        }
         if(savePointData.savePoint.x > _pos.x)
             return;
         savePointData.savePoint = _pos;
