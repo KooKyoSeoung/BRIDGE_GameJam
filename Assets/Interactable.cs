@@ -122,7 +122,6 @@ public class Interactable : MonoBehaviour
                 transform.SetParent(_originalParent);
                 break;
             case InteractableType.HeavyMovable:
-                print("END????????????????????????????");
                 HeavyInteractionEnd();
                 _rb2d.bodyType = RigidbodyType2D.Static;
                 break;

@@ -25,13 +25,14 @@ public class PlayerTriggerInputController : MonoBehaviour
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
     float pressSpaceTimer = 0f;
+    public bool canUseInteractionKey = true;
 
     void Update()
     {
         SearchForInteractableToFocus();
 
         // 상호작용중인 물체가 없고 하이라이트된 물체가 있는 상태에서 F키
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && canUseInteractionKey)
         {
             if (currentFocusedInteractable != null && currentInteractingObject == null) 
             {
