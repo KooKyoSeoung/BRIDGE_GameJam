@@ -13,6 +13,8 @@ public class UIController : MonoBehaviour
     public TimeTravelWarnUI TimeTravelWarn_UI { get; set; } = null;
     //public DialogueUI Dialogue_UI { get; set; } = null;
     //public TitleUI Title_UI { get; set; } = null;
+
+    public IndicatorTrigger indicatorTrigger;
     #endregion
 
     public enum UIType

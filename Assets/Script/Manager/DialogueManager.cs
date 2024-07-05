@@ -21,7 +21,6 @@ public class DialogueManager : MonoBehaviour
 
     public DialogueUI Dialogue_UI { get; set; } = null;
     public DialogueTrigger Dialogue_Trigger { get; set; } = null;
-    public IndicatorTrigger Indicator_Trigger { get; set; } = null;
     #region Unity Life Cycle
     private void Awake()
     {

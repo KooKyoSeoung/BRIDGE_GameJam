@@ -98,19 +98,15 @@ public class PlayerTriggerInputController : MonoBehaviour
             if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
             {
                 TimeTravelItem currentTravelItem = null;
-                if (currentFocusedInteractable != null)
-                    currentTravelItem = currentFocusedInteractable.GetComponent<TimeTravelItem>();
-                //if (currentInteractingObject!=null)
-                //    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                if (currentInteractingObject != null)
+                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
                 TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Present, currentTravelItem);
             }
             else if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
             {
                 TimeTravelItem currentTravelItem = null;
-                if (currentFocusedInteractable != null)
-                    currentTravelItem = currentFocusedInteractable.GetComponent<TimeTravelItem>();
-                //if (currentInteractingObject!=null)
-                //    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                if (currentInteractingObject != null)
+                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
                 TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Past, currentTravelItem);
             }
         }
@@ -138,7 +134,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentFocusedInteractable != null && currentFocusedInteractable != interactable)
         {
             //아웃라인 효과 제거
-            // To Do ~~ Indicator Off
+            UIController.Instance.indicatorTrigger.OnOffIndicator(false, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 0);
         }
 
@@ -147,7 +143,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentFocusedInteractable != null)
         {
             //아웃라인 효과 추가.
-            // To Do ~~ Indicator On
+            UIController.Instance.indicatorTrigger.OnOffIndicator(true, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 1);
         }
     }
