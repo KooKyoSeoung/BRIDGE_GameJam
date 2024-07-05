@@ -76,6 +76,7 @@ public class TimeTravelItem : MonoBehaviour
 
     public void ApplyTimeZone(bool _isActive)
     {
+        AudioChecker();
         if (haveCollder) // Have Collider : Heavy Movable
         {
             if (_isActive)
@@ -120,5 +121,16 @@ public class TimeTravelItem : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    public void AudioChecker()
+    {
+        AudioSource audio = GetComponent<AudioSource>();
+        if (audio == null)
+            return;
+        if (spr.enabled==true)
+            audio.enabled = true;
+        else
+            audio.enabled = false;
     }
 }

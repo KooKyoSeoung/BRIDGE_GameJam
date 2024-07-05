@@ -21,12 +21,16 @@ public class PlayerTriggerInputController : MonoBehaviour
     // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
     bool isOverlapMap = false;
     public bool IsOverlapMap { get { return isOverlapMap; } set { isOverlapMap = value; } }
+
+    [SerializeField] ParticleSystem travelParticle;
     
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
     float pressSpaceTimer = 0f;
     public bool canUseInteractionKey = true;
     public bool hasObtainedWatch = false;
+    
+    [SerializeField] SFXPlayer sfxPlayer;
 
     void Update()
     {
@@ -77,7 +81,10 @@ public class PlayerTriggerInputController : MonoBehaviour
             if (isOverlapMap && hasObtainedWatch == true)
             {
                 if (!DialogueManager.Instance.IsDialogue)
+                {
                     UIController.Instance.TimeTravelWarn_UI.Warning();
+                    sfxPlayer.PlayAudioClip(1);
+                }
             }
         }
 
@@ -100,6 +107,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         {
             isOverlapSpace = true;
             UIController.Instance.TimeTravelWarn_UI.Warning();
+            sfxPlayer.PlayAudioClip(1);
             return;
         }
         else
@@ -112,6 +120,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                 {
                     isOverlapSpace = true;
                     UIController.Instance.TimeTravelWarn_UI.Warning();
+                    sfxPlayer.PlayAudioClip(2);
                     return;
                 }
             }
@@ -120,6 +129,8 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (pressSpaceTimer >= pressSpaceTime)
         {
             isOverlapSpace = true;
+            travelParticle.Play();
+            sfxPlayer.PlayAudioClip(0);
             if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
             {
                 TimeTravelItem currentTravelItem = null;

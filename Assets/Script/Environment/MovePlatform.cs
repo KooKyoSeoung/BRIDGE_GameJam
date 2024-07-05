@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class MovePlatform : MonoBehaviour
 {
-    [Header("��ȹ�� Part")]
-    [SerializeField, Range(2f, 10f), Tooltip("�ٸ� �������� �����ϴ� �ð�")] float reachTime;
-    [SerializeField, Range(0f, 10f), Tooltip("�����ִ� �ð�")] float stopTime;
-
-    [Header("���α׷��� Part")]
+    [SerializeField, Range(2f, 10f)] float reachTime;
+    [SerializeField, Range(0f, 10f)] float stopTime;
     int currentPoint = 0;
     int pointCnt = 0;
     [SerializeField] Vector2[] movePos;
+    [SerializeField] float soundValue = 0.3f;
+    SFXPlayer sfxPlayer;
     //WaitForSeconds delayTime;
 
     private void Awake()
     {
         transform.position = movePos[currentPoint];
         pointCnt = movePos.Length;
+        sfxPlayer = GetComponent<SFXPlayer>();
     }
 
     private void Start()
     {
-        // ���ð� �Ƚ��Ǹ� ���
         //delayTime = new WaitForSeconds(stopTime);
         StartCoroutine(MovePlatformCor());
     }
-
+        
     public IEnumerator MovePlatformCor()
     {
+        sfxPlayer.PlayAudioClip(0);
         float timer = 0f;
         Vector2 startPos = transform.position;
         currentPoint += 1;
@@ -37,12 +37,13 @@ public class MovePlatform : MonoBehaviour
         Vector2 destPos = movePos[currentPoint];
 
         while (timer<=reachTime)
-        {
+        { 
             timer += Time.deltaTime;
             transform.position = Vector2.Lerp(startPos, destPos, timer / reachTime);
             yield return null;
         }
         //yield return delayTime;
+        sfxPlayer.PlayAudioClip(2);
         yield return new WaitForSeconds(stopTime);
         StartCoroutine(MovePlatformCor());
     }

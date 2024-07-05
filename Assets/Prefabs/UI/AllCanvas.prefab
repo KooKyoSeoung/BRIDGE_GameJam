@@ -40,6 +40,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4804932745792194623}
     m_Modifications:
+    - target: {fileID: 4332144835758115411, guid: dbc1ac86e17e1ea4191a4bebdb06a826, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4332144836338336241, guid: dbc1ac86e17e1ea4191a4bebdb06a826, type: 3}
       propertyPath: m_Name
       value: WorldPositionCanvas
@@ -127,6 +131,10 @@ PrefabInstance:
     - target: {fileID: 4332144836338336245, guid: dbc1ac86e17e1ea4191a4bebdb06a826, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332144836338336247, guid: dbc1ac86e17e1ea4191a4bebdb06a826, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbc1ac86e17e1ea4191a4bebdb06a826, type: 3}
