@@ -24,6 +24,7 @@ public class PlayerControl : MonoBehaviour
 
     private Rigidbody2D playerRigidbody;
     private BoxCollider2D playerCollider;
+    private Animator playerAnimator;
 
     private RaycastHit2D groundRay;
     [SerializeField] private Transform slopeCheckPosition;
@@ -42,11 +43,13 @@ public class PlayerControl : MonoBehaviour
     public bool IsSubscribing { get; private set; }
     public bool IsClimbing { get; set; }
     public Vector2 RopePos { get; set; }
+    public float RopeBottomPos { get; set; }
 
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<BoxCollider2D>();
+        playerAnimator = GetComponent<Animator>();
 
         moveLeftKey = KeyCode.LeftArrow;
         moveRightKey = KeyCode.RightArrow;
@@ -82,14 +85,38 @@ public class PlayerControl : MonoBehaviour
         #region Climb
         if (IsClimbing)
         {
+            playerAnimator.SetBool("isClimb", true);
             playerRigidbody.gravityScale = 0.0f;
             gameObject.transform.position = new Vector2(RopePos.x, gameObject.transform.position.y);
             float verticalInput = Input.GetAxis("Vertical");
+
+            if (verticalInput == 0.0f)
+                playerAnimator.speed = 0.0f;
+            else
+                playerAnimator.speed = 1.0f;
+
+            if (RopeBottomPos != 0.0f)
+            {
+                if (transform.position.y <= RopeBottomPos)
+                {
+                    if (verticalInput < 0)
+                        playerRigidbody.velocity = Vector2.zero;
+                }
+            }
 
             if (transform.position.y >= RopePos.y)
             {
                 if (verticalInput > 0)
                     playerRigidbody.velocity = Vector2.zero;
+                else
+                    playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
+            }
+            else if (RopeBottomPos != 0.0f && transform.position.y <= RopeBottomPos)
+            {
+                if (verticalInput < 0)
+                {
+                    playerRigidbody.velocity = Vector2.zero;
+                }
                 else
                     playerRigidbody.velocity = new Vector2(0.0f, verticalInput * climbSpeed);
             }
@@ -106,7 +133,29 @@ public class PlayerControl : MonoBehaviour
 
         if (HeldObject != null)
         {
+            playerAnimator.SetBool("isPush", true);
             Vector2 force = new Vector2(1, 0) * (Input.GetAxis("Horizontal") * pushPullForce);
+            if (force == Vector2.zero)
+                playerAnimator.speed = 0.0f;
+            else
+            {
+                playerAnimator.speed = 1.0f;
+                if (HeldObject.transform.position.x - transform.position.x > 0 && force.x > 0)
+                {
+                    playerAnimator.SetBool("isPush", true);
+                    playerAnimator.SetBool("isPull", false);
+                }
+                else if (HeldObject.transform.position.x - transform.position.x < 0 && force.x < 0)
+                {
+                    playerAnimator.SetBool("isPush", true);
+                    playerAnimator.SetBool("isPull", false);
+                }
+                else
+                {
+                    playerAnimator.SetBool("isPull", true);
+                    playerAnimator.SetBool("isPush", false);
+                }
+            }
             Vector2 velocityYOnly = new Vector2(0.0f, HeldObject.GetComponent<Rigidbody2D>().velocity.y);
             HeldObject.GetComponent<Rigidbody2D>().velocity = force + velocityYOnly;
             playerRigidbody.velocity = force;
@@ -116,6 +165,42 @@ public class PlayerControl : MonoBehaviour
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         else
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        #region Animating Move,Jump
+        if (Mathf.Abs(playerRigidbody.velocity.x) <= 0.1f)
+        {
+            playerAnimator.SetBool("isRun", false);
+        }
+        else
+        {
+            playerAnimator.SetBool("isRun", true);
+        }
+
+        if (Mathf.RoundToInt(playerRigidbody.velocity.normalized.y) == 0)
+        {
+            playerAnimator.SetBool("isUp", false);
+            playerAnimator.SetBool("isDown", false);
+        }
+
+        if (!isGround)
+        {
+            if (playerRigidbody.velocity.normalized.y > 0)
+            {
+                playerAnimator.SetBool("isUp", true);
+                playerAnimator.SetBool("isDown", false);
+            }
+            else if (playerRigidbody.velocity.normalized.y < 0)
+            {
+                playerAnimator.SetBool("isUp", false);
+                playerAnimator.SetBool("isDown", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("isUp", false);
+                playerAnimator.SetBool("isDown", false);
+            }
+        }
+        #endregion
     }
 
     void OnDisable()
@@ -139,6 +224,27 @@ public class PlayerControl : MonoBehaviour
     }
     #endregion
 
+    public void RopeAnimationEnd()
+    {
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetBool("isClimb", false);
+        playerAnimator.SetBool("isUp", true);
+    }
+
+    public void PlayerAnimationEnd()
+    {
+        playerAnimator.SetBool("isRun", false);
+        playerAnimator.SetBool("isUp", false);
+        playerAnimator.SetBool("isDown", false);
+    }
+
+    public void HeldAnimationEnd()
+    {
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetBool("isPush", false);
+        playerAnimator.SetBool("isPull", false);
+    }
+
     private void OnPlayerJump()
     {
         if (Input.GetKeyDown(jumpKey) && coyoteCounter > 0 && !IsClimbing)
@@ -153,9 +259,9 @@ public class PlayerControl : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
 
         if (moveHorizontal < 0)
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.localScale = new Vector3(-3, 3, 3);
         else
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale = new Vector3(3, 3, 3);
 
         Vector2 movement = new Vector2(moveHorizontal, 0.0f);
 
@@ -183,10 +289,12 @@ public class PlayerControl : MonoBehaviour
                 isGround = true;
             }*/
 
-            if (IsClimbing && playerRigidbody.velocity.y < 0)
+            if (IsClimbing && playerRigidbody.velocity.y < 0 && RopeBottomPos == 0.0f)
             {
-                IsClimbing = false;
-                playerRigidbody.gravityScale = originGravity;
+                //IsClimbing = false;
+                //playerRigidbody.gravityScale = originGravity;
+                GripObject.GetComponent<Interactable>().IsRopeJumped = true;
+                GripObject.GetComponent<Interactable>().EndInteraction();
                 //playerCollider.isTrigger = false;
             }
 
