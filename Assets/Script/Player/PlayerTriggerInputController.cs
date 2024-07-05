@@ -40,8 +40,14 @@ public class PlayerTriggerInputController : MonoBehaviour
                 {
                     currentInteractingObject = currentFocusedInteractable;
                     SetFocusInteractable(null);
+                    currentInteractingObject.StartInteraction();
                 }
-                currentInteractingObject.StartInteraction();
+                else
+                {
+                    //QuickInteraction 타입은 포커싱 상태에서 바로 인터랙션
+                    currentFocusedInteractable.StartInteraction();
+                    SetFocusInteractable(null);
+                }
             }
             else if (currentInteractingObject != null)
             {
@@ -63,7 +69,7 @@ public class PlayerTriggerInputController : MonoBehaviour
             // 스토리 텍스트 
             if (DialogueManager.Instance.Dialogue_Trigger != null)
             {
-                DialogueManager.Instance.Dialogue_Trigger.Interaction();
+                //DialogueManager.Instance.Dialogue_Trigger.Interaction();
                 return;
             }
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
@@ -160,6 +166,10 @@ public class PlayerTriggerInputController : MonoBehaviour
             //아웃라인 효과 제거
             UIController.Instance.indicatorTrigger.OnOffIndicator(false, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 0);
+            
+            //interactable이 quickInteraction이라면 다이어로그 준비 해제
+            if (currentFocusedInteractable.interactableType == InteractableType.QuickInteraction)
+            DialogueManager.Instance.Dialogue_Trigger = null;
         }
 
         currentFocusedInteractable = interactable;
@@ -169,6 +179,9 @@ public class PlayerTriggerInputController : MonoBehaviour
             //아웃라인 효과 추가.
             UIController.Instance.indicatorTrigger.OnOffIndicator(true, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 1);
+            
+            if (currentFocusedInteractable.interactableType == InteractableType.QuickInteraction)
+                DialogueManager.Instance.Dialogue_Trigger = currentFocusedInteractable.GetComponent<DialogueTrigger>();
         }
     }
 

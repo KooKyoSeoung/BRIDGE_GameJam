@@ -9,6 +9,7 @@ TagManager:
   - Rope
   - Coke
   - ObjectTimeCheck
+  - SpecialTree
   layers:
   - Default
   - TransparentFX

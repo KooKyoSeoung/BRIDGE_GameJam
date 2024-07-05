@@ -84,7 +84,6 @@ public class Interactable : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 break;
             case InteractableType.HeavyMovable:
-                print("START!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 if (Mathf.Abs(hit.point.y - playerControl.PlayerStandPosY) < 0.2f)
                 {
                     IsHeavyItemDrop = false;
@@ -96,6 +95,7 @@ public class Interactable : MonoBehaviour
                 }
                 break;
             case InteractableType.QuickInteraction:
+                GetComponent<DialogueTrigger>().Interaction();
                 break;
             case InteractableType.Rope:
                 IsRopeJumped = false;
