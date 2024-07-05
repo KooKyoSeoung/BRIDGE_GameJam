@@ -20,6 +20,7 @@ public class PlayerTriggerInputController : MonoBehaviour
     bool isOverlapSpace = false;
     // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
     bool isOverlapMap = false;
+    public bool IsOverlapMap { get { return isOverlapMap; } set { isOverlapMap = value; } }
     
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
@@ -65,10 +66,10 @@ public class PlayerTriggerInputController : MonoBehaviour
                 return;
             }
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
-            if (isOverlapMap)
+            if (isOverlapMap /*|| isOverlapSpace*/ /*|| !TimeTravelManager.Instance.CheckTimeTravelCollide()*/)
             {
-                UIController.Instance.TimeTravelWarn_UI.Warning();
-                return;
+                if (!DialogueManager.Instance.IsDialogue)
+                    UIController.Instance.TimeTravelWarn_UI.Warning();
             }
         }
 
@@ -89,8 +90,23 @@ public class PlayerTriggerInputController : MonoBehaviour
     {
         if(isOverlapMap)
         {
+            Warning();
             isOverlapSpace = true;
             return;
+        }
+        else
+        {
+            TimeTravelItem currentTravelItem = null;
+            if (currentInteractingObject != null)
+            {
+                currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                if (!currentTravelItem.CheckCollide())
+                {
+                    isOverlapSpace = true;
+                    Warning();
+                    return;
+                }
+            }
         }
         // 시간여행 시작
         if (pressSpaceTimer >= pressSpaceTime)
@@ -178,6 +194,7 @@ public class PlayerTriggerInputController : MonoBehaviour
                     }
                     else 
                     {
+                        boxColls[boxCnt - 1].isTrigger = true;
                         // 상호작용 물체와 맵의 충돌 체크
                         if (boxColls[boxCnt - 1].IsTouching(collision))
                             isOverlapMap = true;
@@ -193,6 +210,15 @@ public class PlayerTriggerInputController : MonoBehaviour
     {
         if (collision.CompareTag("Ground"))
             isOverlapMap = false;
+    }
+
+    public void Warning()
+    {
+        if (isOverlapMap)
+        {
+            if (!DialogueManager.Instance.IsDialogue)
+                UIController.Instance.TimeTravelWarn_UI.Warning();
+        }
     }
     #endregion
 }
