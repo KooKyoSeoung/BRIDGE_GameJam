@@ -259,9 +259,9 @@ public class PlayerControl : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
 
         if (moveHorizontal < 0)
-            transform.localScale = new Vector3(-3, 3, 3);
+            transform.localScale = new Vector3(-1, 1, 1);
         else
-            transform.localScale = new Vector3(3, 3, 3);
+            transform.localScale = new Vector3(1, 1, 1);
 
         Vector2 movement = new Vector2(moveHorizontal, 0.0f);
 
