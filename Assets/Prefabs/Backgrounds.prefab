@@ -231,7 +231,6 @@ MonoBehaviour:
   itemTimeZone: 1
   pastTimeZoneSprite: {fileID: 0}
   presentTimeZoneSprite: {fileID: 0}
-  canInteraction: 1
 --- !u!1 &2292268702535135675
 GameObject:
   m_ObjectHideFlags: 0

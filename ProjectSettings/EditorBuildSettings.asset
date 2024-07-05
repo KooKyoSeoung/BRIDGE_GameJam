@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Merge.unity
     guid: 85c95f1163f9e674ba251c8eaba58c4d
+  - enabled: 1
+    path: Assets/Scenes/Minjoon.unity
+    guid: 60ab494734cce3342a6032aabf33d42b
   m_configObjects: {}
