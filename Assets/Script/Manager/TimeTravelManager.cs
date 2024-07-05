@@ -18,6 +18,7 @@ public class TimeTravelManager : MonoBehaviour
 
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
     public PlayerTriggerInputController PlayerTrigger { get; set; } = null; 
+
     #region Unity Life Cycle
     private void Awake()
     {
@@ -45,23 +46,16 @@ public class TimeTravelManager : MonoBehaviour
         if (currentTimeZone == TimeZoneType.None)
             return;
         // Load Save Data
-        LoadTimeData();
+        TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
+        PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
+        ChangeTimeZone(_curTimeZone);
     }
     #endregion
 
-    public void LoadTimeData(bool _isReLoad = false)
+    public void LoadTimeData()
     {
-        if (_isReLoad)
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
-        else
-        {
-            TimeZoneType _curTimeZone = SaveManager.Instance.LoadData.saveTime;
-            PlayerTrigger.gameObject.transform.position = SaveManager.Instance.LoadData.savePoint;
-            ChangeTimeZone(_curTimeZone);
-        }
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
     /// <summary>
