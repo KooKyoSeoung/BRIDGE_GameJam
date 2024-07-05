@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -56,8 +57,10 @@ public class Interactable : MonoBehaviour
     {
         if (interactableType == InteractableType.HeavyMovable)
         {
-            hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundMask);
-            Debug.DrawLine(hit.point, hit.point + hit.normal, Color.red);
+            hit = Physics2D.RaycastAll(transform.position, Vector2.down, rayDistance, groundMask)
+                .FirstOrDefault(x => x.collider.isTrigger == false);
+            
+            //Debug.DrawLine(hit.point, hit.point + hit.normal, Color.red);
 
             if (Vector3.Distance(player.transform.position, transform.position) > 2.0f && !IsHeavyItemDrop)
             {
@@ -81,7 +84,8 @@ public class Interactable : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 break;
             case InteractableType.HeavyMovable:
-                if (Mathf.Abs(hit.point.y - playerControl.PlayerStandPosY) < 0.1f)
+                print("START!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                if (Mathf.Abs(hit.point.y - playerControl.PlayerStandPosY) < 0.2f)
                 {
                     IsHeavyItemDrop = false;
                     _rb2d.bodyType = RigidbodyType2D.Dynamic;
@@ -118,6 +122,7 @@ public class Interactable : MonoBehaviour
                 transform.SetParent(_originalParent);
                 break;
             case InteractableType.HeavyMovable:
+                print("END????????????????????????????");
                 HeavyInteractionEnd();
                 _rb2d.bodyType = RigidbodyType2D.Static;
                 break;
