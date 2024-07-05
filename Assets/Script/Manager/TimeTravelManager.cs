@@ -13,22 +13,25 @@ public class TimeTravelManager : MonoBehaviour
 
     [Header("프로그래밍 Part")]
     [SerializeField, Tooltip("0:과거, 1:현재")] TimeTravelMap[] timeTravelMaps;
+    [SerializeField] GameObject interactionParent;
 
-    #region TimeTravelItemList Data
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
-    public List<TimeTravelItem> TimeTravelItemList { get { return timeTravelItemList; } set { timeTravelItemList = value; } }
-    #endregion
-
+    
     #region Unity Life Cycle
     private void Awake()
     {
+        // Singleton
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this.gameObject);
+
+        // Link Travel Items
+        TimeTravelItem[] travelItems = interactionParent.GetComponentsInChildren<TimeTravelItem>();
+        int travelCnt = travelItems.Length;
+        for(int idx=0; idx<travelCnt; idx++)
+        {
+            timeTravelItemList.Add(travelItems[idx]);
         }
     }
 

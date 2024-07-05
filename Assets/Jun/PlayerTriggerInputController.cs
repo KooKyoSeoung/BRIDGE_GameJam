@@ -14,6 +14,7 @@ public class PlayerTriggerInputController : MonoBehaviour
     public Interactable currentInteractingObject;
     [SerializeField] private Color focusHighlightColor = Color.white;
 
+    [SerializeField] BoxCollider2D timeCheckColl;
     // 스페이스바를 계속 누르는 상태를 방지하기 위한 Bool 변수
     bool isOverlapSpace = false;
     // 다른 시간대의 물체들과 겹치는지 확인하는 Bool 변수
@@ -53,11 +54,21 @@ public class PlayerTriggerInputController : MonoBehaviour
             currentInteractingObject = null;
 
         
-        // 스토리 텍스트 
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            // 스토리 텍스트 
             if (DialogueManager.Instance.Dialogue_Trigger != null)
+            {
                 DialogueManager.Instance.Dialogue_Trigger.Interaction();
+                return;
+            }
+            // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
+            if (isOverlapMap)
+            {
+                UIController.Instance.TimeTravelWarn_UI.Warning();
+                return;
+            }
         }
 
         // 시간 여행 
@@ -75,13 +86,11 @@ public class PlayerTriggerInputController : MonoBehaviour
 
     public void ChangeTimeZone()
     {
-        // 겹치는 물체가 있으면 경고 메시지 출력 
-        if (isOverlapMap)
+        if(isOverlapMap)
         {
-
+            isOverlapSpace = true;
             return;
         }
-
         // 시간여행 시작
         if (pressSpaceTimer >= pressSpaceTime)
         {
@@ -89,15 +98,19 @@ public class PlayerTriggerInputController : MonoBehaviour
             if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Past)
             {
                 TimeTravelItem currentTravelItem = null;
-                if (currentInteractingObject!=null)
-                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                if (currentFocusedInteractable != null)
+                    currentTravelItem = currentFocusedInteractable.GetComponent<TimeTravelItem>();
+                //if (currentInteractingObject!=null)
+                //    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
                 TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Present, currentTravelItem);
             }
             else if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
             {
                 TimeTravelItem currentTravelItem = null;
-                if (currentInteractingObject != null)
-                    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
+                if (currentFocusedInteractable != null)
+                    currentTravelItem = currentFocusedInteractable.GetComponent<TimeTravelItem>();
+                //if (currentInteractingObject!=null)
+                //    currentTravelItem = currentInteractingObject.GetComponent<TimeTravelItem>();
                 TimeTravelManager.Instance.ChangeTimeZone(TimeZoneType.Past, currentTravelItem);
             }
         }
@@ -125,6 +138,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentFocusedInteractable != null && currentFocusedInteractable != interactable)
         {
             //아웃라인 효과 제거
+            // To Do ~~ Indicator Off
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 0);
         }
 
@@ -133,6 +147,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentFocusedInteractable != null)
         {
             //아웃라인 효과 추가.
+            // To Do ~~ Indicator On
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 1);
         }
     }
@@ -141,7 +156,12 @@ public class PlayerTriggerInputController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground"))
-            isOverlapMap = true;
+        {
+            if (timeCheckColl.IsTouching(collision))
+                isOverlapMap = true;
+            else
+                isOverlapMap = false;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
