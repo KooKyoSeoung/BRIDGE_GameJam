@@ -281,7 +281,8 @@ public class PlayerControl : MonoBehaviour
 
     private void SlopeCheck()
     {
-        groundRay = Physics2D.Raycast(slopeCheckPosition.position, Vector2.down, slopeRayDistance, groundMask);
+        groundRay = Physics2D.RaycastAll(slopeCheckPosition.position, Vector2.down, slopeRayDistance, groundMask)
+            .FirstOrDefault(x=>x.collider.isTrigger == false);
 
         if (groundRay)
         {
