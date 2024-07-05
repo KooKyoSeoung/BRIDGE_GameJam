@@ -166,7 +166,7 @@ public class PlayerTriggerInputController : MonoBehaviour
     }
 
     #region Trigger 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground"))
         {
@@ -182,17 +182,17 @@ public class PlayerTriggerInputController : MonoBehaviour
                     // 상호작용하는 물체가 없는 경우
                     isOverlapMap = false;
                 }
-                else
+                else if (currentInteractingObject.interactableType == InteractableType.HeavyMovable)
                 {
                     // 상호작용하는 물체도 겹치는지 확인
                     BoxCollider2D[] boxColls = currentInteractingObject.GetComponentsInChildren<BoxCollider2D>();
                     int boxCnt = boxColls.Length;
                     if (boxCnt == 0) 
                     {
+                        Debug.LogWarning("상호작용 중인 물체는 있지만 BoxCollider가 없음.");
                         // 예외처리
-                        return;
                     }
-                    else 
+                    else
                     {
                         boxColls[boxCnt - 1].isTrigger = true;
                         // 상호작용 물체와 맵의 충돌 체크
