@@ -7,16 +7,18 @@ public class TimeTravelManager : MonoBehaviour
     // Singleton
     public static TimeTravelManager Instance;
 
-    [Header("±âÈ¹ Part")]
-    [SerializeField, Tooltip("½ÃÀÛÇÏ´Â Å¸ÀÓ¶óÀÎ")] TimeZoneType currentTimeZone;
+    [Header("ï¿½ï¿½È¹ Part")]
+    [SerializeField, Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Å¸ï¿½Ó¶ï¿½ï¿½ï¿½")] TimeZoneType currentTimeZone;
     public TimeZoneType CurrentTimeZone { get { return currentTimeZone; } set { currentTimeZone = value;} }
 
-    [Header("ÇÁ·Î±×·¡¹Ö Part")]
-    [SerializeField, Tooltip("0:°ú°Å, 1:ÇöÀç")] TimeTravelMap[] timeTravelMaps;
+    [Header("ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ Part")]
+    [SerializeField, Tooltip("0:ï¿½ï¿½ï¿½ï¿½, 1:ï¿½ï¿½ï¿½ï¿½")] TimeTravelMap[] timeTravelMaps;
     [SerializeField] GameObject interactionParent;
 
     List<TimeTravelItem> timeTravelItemList = new List<TimeTravelItem>();
     public PlayerTriggerInputController PlayerTrigger { get; set; } = null; 
+    private WeatheringRock weatheringRock;
+    
     #region Unity Life Cycle
     private void Awake()
     {
@@ -44,6 +46,10 @@ public class TimeTravelManager : MonoBehaviour
         if (currentTimeZone == TimeZoneType.None)
             return;
         ChangeTimeZone(currentTimeZone);
+        
+        //í’í™” ë°”ìœ„ ì°¾ê¸°
+        weatheringRock = FindObjectOfType<WeatheringRock>();
+        if (weatheringRock == null) Debug.LogWarning("WeatheringRock is Null. ë©”ì¸ ë ˆë²¨ì´ ìˆëŠ” ì”¬ì´ ì•„ë‹ˆë¼ë©´ ë¬´ì‹œí•´ë„ ë¬´ë°©í•©ë‹ˆë‹¤.");
     }
     #endregion
 
@@ -55,6 +61,11 @@ public class TimeTravelManager : MonoBehaviour
         currentTimeZone = _changeType;
         ChangeTimeZoneItem(_excludeTimeTravelItem);
         ChangeTimeZoneMap();
+
+        if (weatheringRock != null)
+        {
+            weatheringRock.OnChangeTimeZone(_changeType);
+        }
     }
 
     #region Change TimeZone
@@ -62,7 +73,7 @@ public class TimeTravelManager : MonoBehaviour
     {
         int timeTravelItemCnt = timeTravelItemList.Count;
         
-        if (_excludeTimeTravelItem == null)  // °¡Á®¿Ã ¹°Ç°ÀÌ ¾ø´Â °æ¿ì
+        if (_excludeTimeTravelItem == null)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             for (int idx = 0; idx < timeTravelItemCnt; idx++)
             {
@@ -75,7 +86,7 @@ public class TimeTravelManager : MonoBehaviour
                 }
             }
         }
-        else // °¡Á®¿Ã ¹°Ç°ÀÌ ÀÖ´Â °æ¿ì
+        else // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
         {
             for (int idx = 0; idx < timeTravelItemCnt; idx++)
             {
