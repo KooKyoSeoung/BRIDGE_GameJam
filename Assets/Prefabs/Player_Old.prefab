@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 674583144}
   - component: {fileID: 5286731159200457249}
   - component: {fileID: 2435532928729860935}
+  - component: {fileID: 3312049869813615728}
   m_Layer: 8
   m_Name: Player_Old
   m_TagString: Player
@@ -113,7 +114,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: -1200499850, guid: 857f704e64ba4214498008718b1ceeb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -161,9 +162,10 @@ MonoBehaviour:
   playerSpeed: 7
   jumpPower: 13
   climbSpeed: 5
-  groundCheckOffset: {x: 0.04, y: -0.85}
-  groundCheckSize: {x: 0.27, y: 0.2}
-  coyoteTime: 0.15
+  groundCheckOffset: {x: 0, y: -0.85}
+  groundCheckSize: {x: 0.22, y: 0.15}
+  coyoteTime: 0.1
+  isGround: 1
   slopeCheckPosition: {fileID: 436545970859710936}
   groundMask:
     serializedVersion: 2
@@ -187,7 +189,9 @@ MonoBehaviour:
   focusHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   timeCheckColl: {fileID: 3664434342851326618}
   travelParticle: {fileID: 5200208283406172886}
-  pressSpaceTime: 0.8
+  pressSpaceTime: 0
+  canUseInteractionKey: 1
+  hasObtainedWatch: 0
   sfxPlayer: {fileID: 2435532928729860935}
 --- !u!70 &436545970900223101
 CapsuleCollider2D:
@@ -200,7 +204,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0.044288635, y: -0.08175433}
   m_Size: {x: 0.437912, y: 1.556114}
@@ -337,6 +341,25 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aaef278b9fca6d945beaf3b8056f356d, type: 3}
   - {fileID: 8300000, guid: b5bb8b386a6fee048899378c8dc6a1bb, type: 3}
   - {fileID: 8300000, guid: 029344d1651854441a439d8f2c294b4c, type: 3}
+--- !u!251 &3312049869813615728
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436545970900222980}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 887
+  m_RotationalOffset: 0
+  m_UseOneWay: 0
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1 &3286778441630282973
 GameObject:
   m_ObjectHideFlags: 0

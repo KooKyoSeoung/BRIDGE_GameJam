@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Delay.unity
     guid: e2a80a01290ed4d4f929a653b5415c6f
+  - enabled: 1
+    path: Assets/Scenes/CutScene.unity
+    guid: 8a3a4bb1a7e97404ba7b29572df76731
   m_configObjects: {}

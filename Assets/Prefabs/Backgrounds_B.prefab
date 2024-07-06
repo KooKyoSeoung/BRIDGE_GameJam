@@ -467,6 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 0}
   parallaxSpeed: 0.1
+  verticalSpeed: 0.2
 --- !u!114 &4906957875192653279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,4 +483,3 @@ MonoBehaviour:
   itemTimeZone: 0
   pastTimeZoneSprite: {fileID: 0}
   presentTimeZoneSprite: {fileID: 0}
-  canInteraction: 1

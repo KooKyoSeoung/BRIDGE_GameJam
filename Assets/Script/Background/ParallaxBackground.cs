@@ -13,6 +13,7 @@ public class ParallaxBackground : MonoBehaviour
     private float[] layerMoveSpeed;
 
     [SerializeField] [Range(0.01f, 1.0f)] private float parallaxSpeed;
+    [SerializeField] private float verticalSpeed;
 
     void Awake()
     {
@@ -60,5 +61,9 @@ public class ParallaxBackground : MonoBehaviour
             float speed = layerMoveSpeed[i] * parallaxSpeed;
             materials[i].SetTextureOffset("_MainTex", new Vector2(distance, 0) * speed);
         }
+        
+        //Y축으로 어느정도 따라오기
+        var yDist = cameraTransform.position.y - cameraStartPosition.y;
+        transform.position = new Vector3(transform.position.x, cameraTransform.position.y - yDist * verticalSpeed, transform.position.z);
     }
 }

@@ -4,35 +4,15 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [Header("ÇÁ·Î±×·¡¹Ö & ±âÈ¹ Part")]
-    [SerializeField, Tooltip("´ê¾ÒÀ» ¶§, ¹Ù·Î ´ëÈ­¸¦ ºÒ·¯¿À´ÂÁö °áÁ¤")] bool isImmediatelyCall = false;
-    [SerializeField, Tooltip("´ëÈ­ ½Ã½ºÅÛÀ» ºÒ·¯¿À´Â ½ºÅä¸® ID")] int storyID;
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            DialogueManager.Instance.Dialogue_Trigger = this;
-            if (isImmediatelyCall)
-            {
-                Interaction();
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            DialogueManager.Instance.Dialogue_Trigger = null;
-        }
-    }
+    [Header("ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ & ï¿½ï¿½È¹ Part")]
+    [SerializeField, Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½Ù·ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")] bool isImmediatelyCall = false;
+    [SerializeField, Tooltip("ï¿½ï¿½È­ ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸® ID")] int storyID;
 
     public void Interaction()
     {
         DialogueManager.Instance.Dialogue_UI.StoryID = storyID;
         DialogueManager.Instance.Dialogue_UI.StartDialogue();
         DialogueManager.Instance.Dialogue_Trigger = null;
-        Destroy(this.gameObject); // or gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

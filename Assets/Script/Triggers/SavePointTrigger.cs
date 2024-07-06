@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class SavePointTrigger : MonoBehaviour
 {
-    [SerializeField] Vector2 saveVec;
-    [SerializeField] TimeZoneType currentTimeZone;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            SaveManager.Instance.SaveData(saveVec, currentTimeZone);
-            Destroy(gameObject);
+            SaveManager.Instance.SaveData(transform.position, TimeTravelManager.Instance.CurrentTimeZone, collision.GetComponent<PlayerTriggerInputController>().hasObtainedWatch);
+            gameObject.SetActive(false);
         }
     }
 }

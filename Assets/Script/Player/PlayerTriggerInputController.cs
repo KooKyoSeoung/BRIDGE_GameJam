@@ -27,22 +27,34 @@ public class PlayerTriggerInputController : MonoBehaviour
     [Space(20), Header("기획 Part")]
     [SerializeField, Tooltip("시간여행을 하기 위해 걸리는 시간 : 스페이스바를 계속 누르는 시간")] float pressSpaceTime;
     float pressSpaceTimer = 0f;
+    public bool canUseInteractionKey = true;
+    public bool hasObtainedWatch = false;
+    
     [SerializeField] SFXPlayer sfxPlayer;
+
     void Update()
     {
         SearchForInteractableToFocus();
 
         // 상호작용중인 물체가 없고 하이라이트된 물체가 있는 상태에서 F키
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && canUseInteractionKey)
         {
-            if (currentFocusedInteractable != null && currentInteractingObject == null) 
+            if (currentFocusedInteractable != null && currentInteractingObject == null)
             {
-                if (currentFocusedInteractable.interactableType != InteractableType.QuickInteraction) //QuickInteraction 타입은 단발적인 interaction이므로 상호작용'중'인 오브젝트로 추가하지 않는다.
+                if (currentFocusedInteractable.interactableType !=
+                    InteractableType
+                        .QuickInteraction) //QuickInteraction 타입은 단발적인 interaction이므로 상호작용'중'인 오브젝트로 추가하지 않는다.
                 {
                     currentInteractingObject = currentFocusedInteractable;
                     SetFocusInteractable(null);
+                    currentInteractingObject.StartInteraction();
                 }
-                currentInteractingObject.StartInteraction();
+                else
+                {
+                    //QuickInteraction 타입은 포커싱 상태에서 바로 인터랙션
+                    currentFocusedInteractable.StartInteraction();
+                    SetFocusInteractable(null);
+                }
             }
             else if (currentInteractingObject != null)
             {
@@ -57,18 +69,18 @@ public class PlayerTriggerInputController : MonoBehaviour
         if (currentInteractingObject != null && currentInteractingObject.IsRopeJumped)
             currentInteractingObject = null;
 
-        
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // 스토리 텍스트 
             if (DialogueManager.Instance.Dialogue_Trigger != null)
             {
-                DialogueManager.Instance.Dialogue_Trigger.Interaction();
+                //DialogueManager.Instance.Dialogue_Trigger.Interaction();
                 return;
             }
+
             // 시간 여행 경고 : 겹치는 물체가 있으면 경고 메시지 출력 
-            if (isOverlapMap)
+            if (isOverlapMap && hasObtainedWatch == true)
             {
                 if (!DialogueManager.Instance.IsDialogue)
                 {
@@ -76,15 +88,46 @@ public class PlayerTriggerInputController : MonoBehaviour
                     sfxPlayer.PlayAudioClip(1);
                 }
             }
+            else if (hasObtainedWatch && GetComponent<PlayerControl>().isGround == false)
+            {
+                if (currentInteractingObject == null ||
+                    currentInteractingObject.interactableType != InteractableType.Rope)
+                {
+                    if (!DialogueManager.Instance.IsDialogue)
+                    {
+                        UIController.Instance.TimeTravelWarn_UI.Warning();
+                        sfxPlayer.PlayAudioClip(1);
+                    }
+                }
+            }
         }
+        
+        print(isOverlapSpace);
 
         // 시간 여행 
-        if (!isOverlapSpace && !DialogueManager.Instance.IsDialogue && Input.GetKey(KeyCode.Space))
+        if (!isOverlapSpace && Input.GetKey(KeyCode.Space) && hasObtainedWatch && DialogueManager.Instance.IsDialogue == false)
         {
-            pressSpaceTimer += Time.deltaTime;
-            ChangeTimeZone();
+            var canChangeTimeZoneAirbourne = true;
+
+            if (GetComponent<PlayerControl>().isGround == false)
+            {
+                if (currentInteractingObject == null || currentInteractingObject.interactableType != InteractableType.Rope)
+                {
+                    canChangeTimeZoneAirbourne = false;
+                }
+            }
+            
+            print(canChangeTimeZoneAirbourne);
+
+            if (canChangeTimeZoneAirbourne)
+            {
+                print("1");
+                pressSpaceTimer += Time.deltaTime;
+                ChangeTimeZone();
+            }
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        
+        if (Input.GetKeyUp(KeyCode.Space) && hasObtainedWatch)
         {
             isOverlapSpace = false;
             pressSpaceTimer = 0f;
@@ -168,6 +211,10 @@ public class PlayerTriggerInputController : MonoBehaviour
             //아웃라인 효과 제거
             UIController.Instance.indicatorTrigger.OnOffIndicator(false, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 0);
+            
+            //interactable이 quickInteraction이라면 다이어로그 준비 해제
+            if (currentFocusedInteractable.interactableType == InteractableType.QuickInteraction)
+            DialogueManager.Instance.Dialogue_Trigger = null;
         }
 
         currentFocusedInteractable = interactable;
@@ -177,6 +224,9 @@ public class PlayerTriggerInputController : MonoBehaviour
             //아웃라인 효과 추가.
             UIController.Instance.indicatorTrigger.OnOffIndicator(true, this.transform);
             currentFocusedInteractable.GetComponent<SpriteRenderer>().material.SetFloat("_OutlinePixelWidth", 1);
+            
+            if (currentFocusedInteractable.interactableType == InteractableType.QuickInteraction)
+                DialogueManager.Instance.Dialogue_Trigger = currentFocusedInteractable.GetComponent<DialogueTrigger>();
         }
     }
 
