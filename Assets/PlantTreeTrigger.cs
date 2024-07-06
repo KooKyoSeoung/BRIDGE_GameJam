@@ -2,16 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlantTreeTrigger : MonoBehaviour
 {
     private bool _isPlayerReadyTree = false;
     PlayerTriggerInputController playerTrigger;
     private bool _didWarnEnding = false;
+    private CutsceneBrain _cutsceneBrain;
 
     private void Start()
     {
         playerTrigger = FindObjectOfType<PlayerTriggerInputController>();
+        _cutsceneBrain = FindObjectOfType<CutsceneBrain>();
     }
 
 
@@ -47,15 +50,13 @@ public class PlantTreeTrigger : MonoBehaviour
                 //시간대 체크하고 현대 시대라면 로그 하나 추가로 띄운뒤 진행.
                 if (TimeTravelManager.Instance.CurrentTimeZone == TimeZoneType.Present)
                 {
-                    print("진엔딩");
-                }
-                else if (_didWarnEnding == false)
-                {
-                    print("가짜 엔딩 경고!");
+                    print("일반엔딩");
+                    _cutsceneBrain.currentCutsceneType = CutsceneType.NormalEnding;
                 }
                 else
                 {
-                    print("가짜 엔딩!");
+                    print("진엔딩!");
+                    _cutsceneBrain.currentCutsceneType = CutsceneType.TrueEnding;
                 }
                 
                 //나무 아이템 삭제
@@ -64,11 +65,10 @@ public class PlantTreeTrigger : MonoBehaviour
                 Destroy(playerTrigger.currentInteractingObject.gameObject);
                 playerTrigger.currentInteractingObject = null;
                 
-                //콜라를 브라키오에게 주는 애니메이션 실행
-                FindObjectOfType<Brakio>().GetComponent<Animator>().SetTrigger("GiveCoke");
-                playerTrigger.canUseInteractionKey = true;
-                
                 UIController.Instance.indicatorTrigger.OnOffIndicator(false, playerTrigger.transform);
+                
+                //이펙트 시작
+                SceneManager.LoadScene("CutScene");
             }
         }
     }

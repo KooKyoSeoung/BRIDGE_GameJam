@@ -58,25 +58,39 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// sfxName ÀÌ¸§ÀÇ SFX Àç»ý
+    /// sfxName ï¿½Ì¸ï¿½ï¿½ï¿½ SFX ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="sfxName"></param>
-    public void PlaySFX(string sfxName)
+    public void PlaySFX(string sfxName, bool newPlayer = false)
     {
-        if (!dic_SFX.ContainsKey(sfxName))
+        if (newPlayer)
         {
-            Debug.LogWarning("SoundManager - Sound not found: " + sfxName);
-            return;
+            AudioSource newSfxPlayer = gameObject.AddComponent<AudioSource>();
+            newSfxPlayer.volume = sfxVolume;
+            newSfxPlayer.clip = dic_SFX[sfxName];
+            newSfxPlayer.loop = false;
+            newSfxPlayer.Play();
         }
+        else
+        {
 
-        sfxPlayer.clip = dic_SFX[sfxName];
-        sfxPlayer.volume = sfxVolume;
 
-        sfxPlayer.Play();
+            if (!dic_SFX.ContainsKey(sfxName))
+            {
+                Debug.LogWarning("SoundManager - Sound not found: " + sfxName);
+                return;
+            }
+
+            sfxPlayer.clip = dic_SFX[sfxName];
+            sfxPlayer.volume = sfxVolume;
+
+            sfxPlayer.Play();
+
+        }
     }
 
     /// <summary>
-    /// bgmName ÀÌ¸§ÀÇ BGM Àç»ý
+    /// bgmName ï¿½Ì¸ï¿½ï¿½ï¿½ BGM ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="bgmName"></param>
     public void PlayBGM(string bgmName)
@@ -87,6 +101,22 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
+
+
+        if (bgmPlayer.clip == dic_BGM["Ending"])
+        {
+            if (dic_BGM[bgmName] == dic_BGM["City"] || dic_BGM[bgmName] == dic_BGM["Forest"])
+            {
+                return;
+            }
+        }
+        
+        if (bgmPlayer.clip == dic_BGM[bgmName])
+        {
+            return;
+        }
+
+
         bgmPlayer.clip = dic_BGM[bgmName];
         bgmPlayer.volume = bgmVolume;
 
@@ -94,7 +124,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGM ¸ØÃã
+    /// BGM ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void StopBGM()
     {
@@ -102,7 +132,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SFX ¸ØÃã
+    /// SFX ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void StopSFX()
     {
@@ -110,7 +140,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGM º¼·ý Á¶Àý (0 ~ 1)
+    /// BGM ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0 ~ 1)
     /// </summary>
     /// <param name="volume"></param>
     public void SetBGMVolume(float volume)
@@ -121,7 +151,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SFX º¼·ý Á¶Àý (0 ~ 1)
+    /// SFX ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0 ~ 1)
     /// </summary>
     /// <param name="volume"></param>
     public void SetSFXVolume(float volume)
@@ -147,7 +177,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SFX ¸ñ·Ï¿¡ ÇØ´ç SFX ÀÖ´ÂÁö È®ÀÎ
+    /// SFX ï¿½ï¿½Ï¿ï¿½ ï¿½Ø´ï¿½ SFX ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     /// </summary>
     /// <param name="sfxName"></param>
     /// <returns></returns>

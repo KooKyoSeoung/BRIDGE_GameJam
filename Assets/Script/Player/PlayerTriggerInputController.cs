@@ -105,7 +105,7 @@ public class PlayerTriggerInputController : MonoBehaviour
         print(isOverlapSpace);
 
         // 시간 여행 
-        if (!isOverlapSpace && Input.GetKey(KeyCode.Space) && hasObtainedWatch)
+        if (!isOverlapSpace && Input.GetKey(KeyCode.Space) && hasObtainedWatch && DialogueManager.Instance.IsDialogue == false)
         {
             var canChangeTimeZoneAirbourne = true;
 

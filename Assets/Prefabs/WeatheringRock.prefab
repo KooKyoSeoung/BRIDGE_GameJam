@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 7313488354684087561}
   - component: {fileID: 1078475131366047588}
   - component: {fileID: 6444451320565947930}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeatheringRock
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 7313488354684087565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 233.487, y: -1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -116,12 +116,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waterfall: {fileID: 0}
-  _noColOffset: {x: 0, y: 0}
-  _noColSize: {x: 1, y: 0}
-  _shortColOffset: {x: 0, y: 0}
-  _shortColSize: {x: 1, y: 3.9}
-  _tallColOffset: {x: 0, y: 0}
-  _tallColSize: {x: 1, y: 5.79}
+  _noColOffset: {x: 0.2674391, y: 0}
+  _noColSize: {x: 1.534878, y: 0}
+  _shortColOffset: {x: 0.2674391, y: 0}
+  _shortColSize: {x: 1.534878, y: 3.9}
+  _tallColOffset: {x: 0.2674391, y: 0}
+  _tallColSize: {x: 1.534878, y: 5.79}
   _pushColTime: 0.2
 --- !u!61 &1078475131366047588
 BoxCollider2D:
@@ -136,7 +136,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.26743907, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -147,7 +147,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 5.79}
+  m_Size: {x: 1.5348781, y: 5.79}
   m_EdgeRadius: 0
 --- !u!50 &6444451320565947930
 Rigidbody2D:

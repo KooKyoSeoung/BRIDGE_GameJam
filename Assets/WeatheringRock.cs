@@ -50,6 +50,8 @@ public class WeatheringRock : MonoBehaviour
                 spriteRenderer.enabled = false;
                 if (pushColliiderRoutine != null) StopCoroutine(pushColliiderRoutine);
                 pushColliiderRoutine = StartCoroutine(PushCollider(_noColOffset, _noColSize));
+                
+                Managers.Sound.PlayBGM("Ending");
             }
         }
     }

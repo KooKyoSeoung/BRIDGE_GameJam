@@ -15,7 +15,7 @@ public class TitleSceneManager : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            SceneManager.LoadScene("Minjoon");
+            SceneManager.LoadScene("CutScene");
         }
     }
 }
