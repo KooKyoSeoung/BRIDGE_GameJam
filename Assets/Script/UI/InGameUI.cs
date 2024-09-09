@@ -18,16 +18,17 @@ public class InGameUI : MonoBehaviour
         Exit = 2,
     }
 
-    void Start()
-    {
-        btns[(int)InGameUIBtnType.Resume].onClick.AddListener(ResumeGame);
-        btns[(int)InGameUIBtnType.ReturnTitle].onClick.AddListener(ReturnTitleScene);
-        btns[(int)InGameUIBtnType.Exit].onClick.AddListener(()=> Application.Quit());
-    }
+    //void Start()
+    //{
+    //    btns[(int)InGameUIBtnType.Resume].onClick.AddListener(()=>ResumeGame());
+    //    btns[(int)InGameUIBtnType.ReturnTitle].onClick.AddListener(()=>ReturnTitleScene());
+    //    btns[(int)InGameUIBtnType.Exit].onClick.AddListener(()=> Application.Quit());
+    //}
 
     #region Btn Method
     public void ResumeGame()
     {
+        //Debug.Log("´­·È´Ù");
         Time.timeScale = 1f;
         onoffUIObject.SetActive(false);
     }
@@ -36,6 +37,11 @@ public class InGameUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(titleSceneName);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
     #endregion
 

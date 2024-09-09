@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -44,6 +45,12 @@ public class UIController : MonoBehaviour
         //    Dialogue_UI = GetComponentInChildren<DialogueUI>();
     }
 
+    private void Start()
+    {
+        infoBtns[0].onClick.AddListener(() => TurnOnInfo());
+        infoBtns[1].onClick.AddListener(() => TurnOffInfo());
+    }
+
     void Update()
     {
         #region InGameUI
@@ -51,6 +58,11 @@ public class UIController : MonoBehaviour
         {
             if (InGame_UI == null)
                     return;
+            if (isOnInfo)
+            {
+                TurnOffInfo();
+                return;
+            }
             InGame_UI.OnOffUI();
         }
         #endregion
@@ -72,4 +84,23 @@ public class UIController : MonoBehaviour
     {
         TimeTravelManager.Instance.LoadTimeData();
     }
+
+    #region InfoUI
+    [SerializeField, Tooltip("0:Icon, 1:Back")] Button[] infoBtns;
+    [SerializeField] GameObject infoUIObject;
+    bool isOnInfo = false;
+    public void TurnOnInfo()
+    {
+        isOnInfo = true;
+        Time.timeScale = 0f;
+        infoUIObject.SetActive(true);
+    }
+
+    public void TurnOffInfo()
+    {
+        isOnInfo = false;
+        Time.timeScale = 1f;
+        infoUIObject.SetActive(false);
+    }
+    #endregion
 }

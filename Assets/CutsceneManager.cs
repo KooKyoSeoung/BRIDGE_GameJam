@@ -12,9 +12,9 @@ public class CutsceneManager : MonoBehaviour
 {
     public TextMeshProUGUI mainText;
 
-    public string[] introTexts;
-    public string[] trueEndingTexts;
-    public string[] normalEndingTexts;
+    [TextArea] public string[] introTexts;
+    [TextArea] public string[] trueEndingTexts;
+    [TextArea] public string[] normalEndingTexts;
     public Image introImage;
     public Image trueEndingImage;
     public Image normalEndingImage;
